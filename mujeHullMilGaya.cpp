@@ -3,51 +3,9 @@
 #include <boost/algorithm/string.hpp> 
 #include <stdlib.h>
 #include <iostream>
-class Data{
-	private:
-	std::string filePath;
-	std::string delim;
-	public:
-	static const int DATA_LINE_SIZE = 20; 
-	int generateTestCases(){
-		return 0;
-	}
-	inline std::string getDelim(){
-		return delim;
-	}
-	inline std::string getFilePath(){
-		return filePath;
-	}
-	Data(std::string filePath,char delim=','){
-		this->filePath=filePath;
-		this->delim=delim;
-	}
-};
-
-	
-class Node{
-	private:
-	double x;
-	double y;
-	public:
-	Node(double x,double y){
-		this->x=x;
-		this->y=y;
-	}
-	std::pair<double,double> getPoint(){
-		return std::make_pair(x,y);
-	}
-	static bool compareX(void* a,void* b){
-		Node val1=*((Node*)a);
-		Node val2=*((Node*)b);
-		if(val1.x<=val2.x){
-			return true;
-		}
-		else{
-			false;
-		}
-	}
-};
+#include "data.h"
+#include "node.h"
+#include "utilities.h"
 
 class Edge{
 	private:
@@ -72,7 +30,6 @@ class Graph{
 				std::getline(fileDes,line);
 				boost::split(coordinates,line,boost::is_any_of(data.getDelim()));
 				if(coordinates.size()==2){
-					std::cout<<"x:"<<coordinates.at(0)<<std::endl;
 					pointList.push_back( Node ( std::stod(coordinates.at(0)),std::stod(coordinates.at(1) ) ) );
 				}
 				else{
@@ -88,60 +45,30 @@ class Graph{
 		return pointList;
 	}
 
+	void setPointList(std::vector<Node> &pointList){
+		this->pointList.swap(pointList);
+	}
+
+	void displayPointList(){
+		for(auto it=pointList.begin();it<pointList.end();it++){
+			std::cout<<"X:"<<it->getPoint().first<<" Y:"<<it->getPoint().second<<std::endl;
+		}
+	}
+
 };
 
-class Utilities{
-	public:
-	Utilities(){
 
-	}
-
-	template <typename T>
-	void sort(std::vector<T> array,bool (*compare)(void* a,void* b) ){
-		std::size_t const mid=array.size()/2;
-		std::vector<T> low(array.begin(),array.begin()+mid);
-		std::vector<T> high(array.begin()+mid,array.end());
-		sort(low,compare);
-		sort(high,compare);
-
-		std::vector<T> temp;
-		typename std::vector<T>::iterator left=low.begin();
-		typename std::vector<T>::iterator right=high.begin();
-		while(left<low.end() && right<high.end()){
-			if( (*compare) ( (void*)&*left,(void*)&*right ) ) {//left smaller than right
-				temp.push_back(*left);
-			}
-			else{
-				temp.push_back(*right);
-			}
-		}
-		while(left<low.end()){
-			temp.push_back(*left);
-		}
-		while(right<high.end()){
-			temp.push_back(*right);
-		}
-
-		typename std::vector<T>::iterator iter1,iter2;
-		for(iter1=temp.begin(),iter2=array.begin();iter1<temp.end();iter1++,iter2++){
-			*iter2=*iter1;
-		}
-	}
-
-	void mom(){
-
-	}
-};
 
 
 int main(){
 	Data data=Data("./test.txt");
 	Graph graph=Graph(data);
 	Utilities utility=Utilities();
-	utility.sort(graph.getPointList(),(&Node::compareX) );
-	std::vector<Node>::iterator it= graph.getPointList().begin();
-	for(;it<graph.getPointList().end();it++){
-		std::cout<<it->getPoint().first<<" "<<it->getPoint().second<<std::endl;
-	}
+
+	std::vector<Node> pointList=graph.getPointList();
+	utility.sort(pointList,(&Node::compareX) );
+	graph.setPointList(pointList);
+	
+	graph.displayPointList();
 	return 0;
 }
