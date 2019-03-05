@@ -1,11 +1,12 @@
 #include <vector>
 #include <fstream>
-#include <boost/algorithm/string.hpp> 
+#include <boost/algorithm/string.hpp>
 #include <stdlib.h>
 #include <iostream>
 #include "data.h"
 #include "node.h"
 #include "utilities.h"
+// #include "edge.h"
 
 class Edge{
 	private:
@@ -18,7 +19,7 @@ class Graph{
 	std::vector<Node> pointList;
 	// std::vector<Edge> edges;
 	public:
-	
+
 	Graph(Data data){
 
 		if(data.getFilePath().empty()==0){
@@ -36,7 +37,7 @@ class Graph{
 					std::cerr<<"This file has been incorrectly formatted\n";
 					exit(EXIT_FAILURE);
 				}
-			} 
+			}
 		}
 
 	}
@@ -68,7 +69,7 @@ int main(){
 	std::vector<Node> pointList=graph.getPointList();
 	utility.sort(pointList,(&Node::compareX) );
 	graph.setPointList(pointList);
-	
+
 	graph.displayPointList();
 	return 0;
 }

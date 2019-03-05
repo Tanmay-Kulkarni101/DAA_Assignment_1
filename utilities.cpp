@@ -6,6 +6,7 @@ Utilities::Utilities(){
 
 }
 
+
 template <typename T>
 void Utilities::sort(std::vector<T> &array,bool (*compare)(void* a,void* b) ){
 	if (array.size()<=1){

@@ -1,6 +1,6 @@
 #ifndef UTILITY
 #define UTILITY
-
+#include<vector>
 class Utilities{
 	public:
 	Utilities();
