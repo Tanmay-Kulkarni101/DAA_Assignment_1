@@ -3,10 +3,10 @@ import numpy as np
 import os
 
 def generateData():
-	number_of_points = 100
+	number_of_points = 10
 
 	if os.path.isdir("./data") is False:
-		os.mkdir("./data")	
+		os.mkdir("./data")
 
 		data_points=[]
 		for i in range(0,number_of_points):
@@ -21,7 +21,7 @@ def generateData():
 
 	print("Data Generated\n")
 
-	
+
 def main():
 	generateData()
 if __name__ == '__main__':
