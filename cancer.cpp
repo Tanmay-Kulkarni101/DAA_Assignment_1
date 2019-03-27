@@ -70,11 +70,77 @@ vector<pair<double,double>> graham_scan(vector<pair<double,double>> point_list){
         }
         st.push_back(polar_angles[i]);
     }
+    vector<pair<double,double>> solution;
     for(int i=0;i<st.size();i++){
         cout<<st[i].first.first<<" "<<st[i].first.second<<" -> "<<st[i].second<<endl;
+        solution.push_back(st[i].first);
+    }
+
+    return solution;
+}
+
+vector<pair<double,double>> jarvis_march(vector<pair<double,double>> point_list){
+    pair<double,double> corner_point = point_list[0];
+    int location = 0;
+    for(int i=1;i<point_list.size();i++){
+        // printf("Looking at %lf %lf \n",point_list[i].first,point_list[i].second);
+        if(corner_point.first > point_list[i].first){
+            corner_point = point_list[i];
+            location = i;
+            // cout<<"New corner point"<<corner_point.first<<" "<<corner_point.second<<endl;
+        }
+        else if(corner_point.first == point_list[i].first && corner_point.second > point_list[i].second){
+            corner_point = point_list[i];
+            location = i;
+            // cout<<"New corner point"<<corner_point.first<<" "<<corner_point.second<<endl;
+        }
+    }
+    cout<<"The corner point is "<<corner_point.first<<" "<<corner_point.second<<endl;
+    point_list.erase(point_list.begin()+location);
+    vector<pair<double,double>> solution;
+    solution.push_back(corner_point);
+    pair<double,double> candidate = point_list[0], last_point = solution[solution.size()-1];
+    while(true/*Reach the corner point again*/){
+        candidate = point_list[0];
+        printf("the starting candidate is %lf %lf\n",candidate.first,candidate.second);
+        // if(candidate == corner_point)
+        //     candidate = point_list[1];
+        last_point = solution[solution.size()-1];
+        location = 0 ;
+        for(int i=1;i<point_list.size();i++){
+            if(get_orientation(last_point,candidate,point_list[i]) == false){
+                printf("get_orientation = %lf,%lf %lf,%lf %lf,%lf -> %d\n",last_point.first,last_point.second,candidate.first,candidate.second,point_list[i].first,point_list[i].second,get_orientation(last_point,candidate,point_list[i]));
+                candidate = point_list[i];
+                location = i;
+            }
+            else{
+                printf("get_orientation = %lf,%lf %lf,%lf %lf,%lf -> %d\n",last_point.first,last_point.second,candidate.first,candidate.second,point_list[i].first,point_list[i].second,get_orientation(last_point,candidate,point_list[i]));
+            }
+        }
+        if(last_point!=corner_point && get_orientation(last_point,candidate,corner_point) == false)
+            break;
+        solution.push_back(*(point_list.begin()+location));
+        printf("%lf %lf has been erased\n",(point_list.begin()+location)->first,(point_list.begin()+location)->second);
+        candidate = *(point_list.begin()+location);
+        printf("the candidate is %lf %lf\n",candidate.first,candidate.second);
+        point_list.erase(point_list.begin()+location);
+        for(int i=0;i<point_list.size();i++){
+            cout<<point_list[i].first<<" "<<point_list[i].second<<endl;
+        }
+        cout<<"**********Das temp solution ist********\n";
+        for(int i=0;i<solution.size();i++){
+            cout<<solution[i].first<<" "<<solution[i].second<<endl;
+        }
+        char c;
+        cin >> c;
+        cout<<"***********************************\n";
+    }
+    cout<<"Das solution ist\n";
+    for(int i=0;i<solution.size();i++){
+        cout<<solution[i].first<<" "<<solution[i].second<<endl;
     }
     return point_list;
-}
+} 
 
 int main(){
     fstream file;
@@ -93,7 +159,7 @@ int main(){
             cout<<point.first<<" "<<point.second<<endl;
         }
         file.close();
-        vector<pair<double,double>> convex_hull = graham_scan(point_list);
+        vector<pair<double,double>> convex_hull = jarvis_march(point_list);
     }
     else{
         printf("Unable to open the file\n");

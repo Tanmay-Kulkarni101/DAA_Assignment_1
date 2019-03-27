@@ -47,27 +47,29 @@ def grahm_scan(data_points):
 			if len(stack)>1 and get_orientation(stack[-2],stack[-1],sorted_points[i]) is False :
 				file_handle.write("{0} {1} {2} {3} 0\n".format(stack[-1][0],stack[-1][1],sorted_points[i][0],sorted_points[i][1])) #try to be part
 				file_handle.write("{0} {1} {2} {3} -1\n".format(stack[-1][0],stack[-1][1],stack[-2][0],stack[-2][1])) # this is not a part of the hull
-				stack.pop()
+				print(stack.pop(), ' has been removed')
 				file_handle.write("{0} {1} {2} {3} 0\n".format(stack[-1][0],stack[-1][1],sorted_points[i][0],sorted_points[i][1])) #try to be part but after popping
 			else:
 				file_handle.write("{0} {1} {2} {3} 0\n".format(stack[-1][0],stack[-1][1],sorted_points[i][0],sorted_points[i][1])) # try to be a part
 				stack += [sorted_points[i]]
+				print(stack[-1], ' has been added')
 
 		hull_points += stack
 
 		stack = [sorted_points[-1]]
 		stack += [sorted_points[-2]]
 
-		for i in range(len(sorted_points)-1,0,-1):
+		for i in range(len(sorted_points)-3,-1,-1):
 			if len(stack)>1 and get_orientation(stack[-2],stack[-1],sorted_points[i]) is False :
 				file_handle.write("{0} {1} {2} {3} 0\n".format(stack[-1][0],stack[-1][1],sorted_points[i][0],sorted_points[i][1])) #try to be part
 				file_handle.write("{0} {1} {2} {3} -1\n".format(stack[-1][0],stack[-1][1],stack[-2][0],stack[-2][1])) # this is not a part of the hull
-				stack.pop()
+				print(stack.pop(), ' has been removed')
 				file_handle.write("{0} {1} {2} {3} 0\n".format(stack[-1][0],stack[-1][1],sorted_points[i][0],sorted_points[i][1])) #try to be part but after popping
 			else:
 				file_handle.write("{0} {1} {2} {3} 0\n".format(stack[-1][0],stack[-1][1],sorted_points[i][0],sorted_points[i][1])) # try to be a part
 				stack += [sorted_points[i]]
-
+				print(stack[-1], ' has been added')
+				
 		hull_points += stack
 
 		if len(hull_points)<=2:
