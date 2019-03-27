@@ -257,7 +257,7 @@ int main(){
         file.close();
         vector<pair<double,double>> convex_hull = jarvis_march(point_list);
         pair<double,double> answer = median(point_list,point_list.size());
-        printf("The median is %lf %lf\n", answer.first,answer.second);
+        printf("\n\nThe median is %lf %lf\n", answer.first,answer.second);
     }
     else{
         printf("Unable to open the file\n");
