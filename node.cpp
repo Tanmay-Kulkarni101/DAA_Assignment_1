@@ -19,3 +19,22 @@ bool Node::compareX(void* a,void* b){
 		return false;
 	}
 }
+
+	bool Node::operator <(Node operand2){
+		return this->x < operand2.getPoint().first ? true : false ;  
+	}
+	bool Node::operator >(Node operand2){
+		return this->x > operand2.getPoint().first ? true : false ;
+	}
+	bool Node::operator <=(Node operand2){
+		return this->x <= operand2.getPoint().first ? true : false ;
+	}
+	bool Node::operator >=(Node operand2){
+		return this->x >= operand2.getPoint().first ? true : false ;
+	}
+	bool Node::operator ==(Node operand2){
+		return ((this->x == operand2.getPoint().first) && (this->y == operand2.getPoint().second) ) ? true : false ;
+	}
+	bool Node::operator !=(Node operand2){
+		return this->x != operand2.getPoint().first ? true : false ;
+	}

@@ -1,4 +1,7 @@
 #include <bits/stdc++.h>
+#include "node.h"
+
+
 using namespace std;
 vector<string> split(const char *str, char c = ' ')
 {
@@ -143,29 +146,29 @@ vector<pair<double,double>> jarvis_march(vector<pair<double,double>> point_list)
     return point_list;
 } 
 
-pair<double,double> median_of_median(vector<pair<double,double>> point_list){
+
+template <typename T>
+T median_of_median(vector<T> point_list){
 
     if(point_list.size() <= 5){
         for(int i = 0; i < point_list.size(); i++){
             for(int j = i+1; j < point_list.size()-1; j++){
                 if(point_list[i].first > point_list[j].first){
-                    pair<double,double> temp = point_list[i];
+                    T temp = point_list[i];
                     point_list[i] = point_list[j];
                     point_list[j] = temp;
                 }
             }
         }
-        if(point_list.size()%2 == 0)
-            return make_pair((point_list[point_list.size()/2].first+point_list[point_list.size()/2-1].first)/2,(point_list[point_list.size()/2].second+point_list[point_list.size()/2-1].second)/2);
-        else
-            return point_list[point_list.size()/2];
+       
+        return point_list[point_list.size()/2];
     }
     int num_buckets = (point_list.size() + 4)/5; // ceil of the values
-    vector < vector < pair < double,double > > > grid;
+    vector < vector < T > > grid;
     
     int bucket_index = 0;
     int current_bucket_size = 0; 
-    vector<pair<double,double>> temp;
+    vector<T> temp;
 
     for(int i = 0; i < point_list.size(); i++ ){
         
@@ -184,8 +187,8 @@ pair<double,double> median_of_median(vector<pair<double,double>> point_list){
         for(int i = 0; i < grid[index].size(); i++){
             for(int j = i+1; j < grid[index].size()-1; j++){
         
-                if(grid[index][i].first > grid[index][j].first){
-                    pair<double,double> temp = grid[index][i];
+                if(grid[index][i] > grid[index][j]){
+                    T temp = grid[index][i];
                     grid[index][i] = grid[index][j];
                     grid[index][j] = temp;
         
@@ -194,25 +197,25 @@ pair<double,double> median_of_median(vector<pair<double,double>> point_list){
         }
     }
 
-    vector<pair<double,double>> medians;
+    vector<T> medians;
     for(int i = 0; i < num_buckets - 1; i++){
         medians.push_back(grid[i][grid[i].size()/2]);
     }
     return median_of_median(medians);
 }
-
-pair<double,double> median(vector<pair<double,double>> point_list, int offset){
+template <typename T>
+T median(vector<T> point_list, int offset){
 
 // get pivot
-    pair<double,double> pivot = median_of_median(point_list);
-    vector<pair<double,double>> left,right;
+    T pivot = median_of_median(point_list);
+    vector<T> left,right;
     for (int i = 0; i < point_list.size() ; i++ ){
-        if (point_list[i].first == pivot.first && point_list[i].second == pivot.second)
+        if (point_list[i] == pivot )
             continue;
-        else if(point_list[i].first <= pivot.first){
+        else if(point_list[i] <= pivot){
             left.push_back(point_list[i]);
         }
-        else if(point_list[i].first > pivot.first){
+        else if(point_list[i] > pivot){
             right.push_back(point_list[i]);
         }
     }
@@ -236,7 +239,68 @@ pair<double,double> median(vector<pair<double,double>> point_list, int offset){
 }
 
 
+tuple<pair<double,double>,pair<double,double>,int,int > get_corner_points(vector<pair<double,double>> point_list,bool flag_upper){
+    pair<double,double> min = point_list[0];
+    pair<double,double> max = point_list[0];
+    int location_min=0,location_max=0;
+    for (int i=1;i < point_list.size();i++){
+        if(min.first > point_list[i].first){
+            min= point_list[i];
+            location_min = i;
+        }
+        else if( min.first == point_list[i].first && flag_upper == true && min.second < point_list[i].second){
+            min = point_list[i];
+            location_min = i;
+        }
+        else if(min.first == point_list[i].first && flag_upper == false && min.second > point_list[i].second){
+            min = point_list[i];
+            location_min = i;
+        }
 
+        if(max.first < point_list[i].first){
+            max = point_list[i];
+            location_max = i;
+        }
+        else if( max.first == point_list[i].first && flag_upper == true && max.second < point_list[i].second){
+            max = point_list[i];
+            location_max = i;
+        }
+        else if(max.first == point_list[i].first && flag_upper == false && max.second > point_list[i].second){
+            max = point_list[i];
+            location_max = i;
+        }
+    }
+
+    tuple<pair<double,double>,pair<double,double>,int,int > answer = make_tuple(min,max,location_min,location_max);
+    return  answer;
+}
+vector<pair<double,double>> KPS(vector<pair<double,double>> point_list){
+    // pmin and pmax
+    // Call Upper Hull -> Upper Bridge
+    // Call Lower Hull -> Lower Bridge
+    // Join them
+    vector<pair<double,double>> upper_hull_points,lower_hull_points;
+    
+    tuple<pair<double,double>,pair<double,double>,int,int > corner_point_upper = get_corner_points(point_list,true);
+    upper_hull_points.push_back(get<0>(corner_point_upper));
+    double slope = (get<0>(corner_point_upper).second - get<1>(corner_point_upper).second ) / ( get<0>(corner_point_upper).first - get<1>(corner_point_upper).first  );
+    double intercept = (get<0>(corner_point_upper).second - slope * get<0>(corner_point_upper).first);
+    for(int i=0;i<point_list.size();i++){
+        if(point_list[i].second - slope* point_list[i].first > intercept){
+            upper_hull_points.push_back(point_list[i]);
+        }
+    }
+    
+    point_list.erase(point_list.begin()+get<2>(corner_point_upper));
+    point_list.erase(point_list.begin()+get<3>(corner_point_upper));
+
+    upper_hull_points.push_back(get<1>(corner_point_upper));
+
+    tuple<pair<double,double>,pair<double,double>,int,int > corner_point_lower = get_corner_points(point_list,false);
+    
+    
+    return point_list;
+}
 
 int main(){
     fstream file;
@@ -255,12 +319,15 @@ int main(){
             cout<<point.first<<" "<<point.second<<endl;
         }
         file.close();
-        vector<pair<double,double>> convex_hull = jarvis_march(point_list);
+        vector<pair<double,double>> convex_hull = KPS(point_list);
+
         pair<double,double> answer = median(point_list,point_list.size());
         printf("\n\nThe median is %lf %lf\n", answer.first,answer.second);
     }
     else{
         printf("Unable to open the file\n");
     }
+    // Node n1=Node(1,1),n2=Node(2,1);
+    // cout<< ( n1 < n2 ) << endl;
     return 0;
 }
