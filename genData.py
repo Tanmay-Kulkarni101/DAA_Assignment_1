@@ -3,7 +3,7 @@ import numpy as np
 import os
 
 def generateData():
-	number_of_points = 10
+	number_of_points = 20
 
 	if os.path.isdir("./data") is False:
 		os.mkdir("./data")

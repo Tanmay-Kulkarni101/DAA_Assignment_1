@@ -149,10 +149,10 @@ vector<pair<double,double>> jarvis_march(vector<pair<double,double>> point_list)
 
 template <typename T>
 T median_of_median(vector<T> point_list){
-
-    if(point_list.size() <= 5){
-        for(int i = 0; i < point_list.size(); i++){
-            for(int j = i+1; j < point_list.size()-1; j++){
+    // printf("baya\n");
+    if(point_list.size() <= 5 && point_list.size() > 0){
+        for(int i = 0; i < point_list.size()-1; i++){
+            for(int j = i+1; j < point_list.size(); j++){
                 if(point_list[i].first > point_list[j].first){
                     T temp = point_list[i];
                     point_list[i] = point_list[j];
@@ -160,7 +160,7 @@ T median_of_median(vector<T> point_list){
                 }
             }
         }
-       
+        // printf("less than 5 baya\n");
         return point_list[point_list.size()/2];
     }
     int num_buckets = (point_list.size() + 4)/5; // ceil of the values
@@ -184,8 +184,8 @@ T median_of_median(vector<T> point_list){
     // sort the buckets directly
     for(int index = 0; index < num_buckets; index++){
 
-        for(int i = 0; i < grid[index].size(); i++){
-            for(int j = i+1; j < grid[index].size()-1; j++){
+        for(int i = 0; i < grid[index].size()-1; i++){
+            for(int j = i+1; j < grid[index].size(); j++){
         
                 if(grid[index][i] > grid[index][j]){
                     T temp = grid[index][i];
@@ -201,6 +201,8 @@ T median_of_median(vector<T> point_list){
     for(int i = 0; i < num_buckets - 1; i++){
         medians.push_back(grid[i][grid[i].size()/2]);
     }
+    // printf("median's size: %lu\n",medians.size() );
+    // printf("mom me recurse karta\n");
     return median_of_median(medians);
 }
 template <typename T>
@@ -220,18 +222,40 @@ T median(vector<T> point_list, int offset){
         }
     }
 
-    if(left.size()  < right.size()){
-        offset -= left.size() + 1; // As we reduce our target by the number we eliminate and the pivot itself
-        return median(right,offset);
-    }
-    else if(left.size() > right.size()){
-        // offset remains the same
-        return median(left,offset);
+    // if(left.size()  < right.size()){
+    //     offset -= left.size(); // As we reduce our target by the number we eliminate and the pivot itself we don't use +1 as we 0-index
+    //     if(offset == 0)
+    //         return pivot;
+    //     return median(right,offset);
+    // }
+    // else if(left.size() > right.size()){
+    //     if(offset == left.size())
+    //         return pivot;
+    //     // offset remains the same
+    //     return median(left,offset);
+    // }
+    // else{
+    //     if(offset == left.size())
+    //         return pivot;
+    //     if(offset > left.size())
+    //         return median();
+    //     else
+    //         return 
+    // }
+    // printf("lol\n");
+    if(left.size() == offset){
+            // printf("completed\n");
+            return pivot;
+        }
+    else if(left.size() < offset){        
+        // printf("recursing on right side\n");
+        // printf("offset: %d, left size: %lu\n",offset,left.size() );
+        return median(right, offset - left.size() - 1);
     }
     else{
-        return pivot;
+        // printf("recursing on left side\n");
+        return median(left, offset);
     }
-
 
 // get partition
 // recurse depending on cases
@@ -353,16 +377,25 @@ vector<pair<double,double>> upper_bridge(vector<pair<double,double>> point_list)
 		}
 
 		double slope = median_line.first;
-		int index_of_desired_point = 0;
+		double x_min,x_max;
 		double intercept = point_list[0].second - slope*point_list[0].first;
-
+        x_min = point_list[0].first;
+        x_max = point_list[0].first; 
 		for(int i=1;i<point_list.size();i++){
-			double temp_intercept = left[i].second - slope*point_list[i].first;
+			double temp_intercept = point_list[i].second - slope*point_list[i].first;
 			if(temp_intercept>intercept){
-				index_of_desired_point=i;
 				intercept=temp_intercept;
+                x_min = x_max = point_list[i].first;
 			}	
-		}// TODO handle zero elements
+            else if(temp_intercept==intercept){
+                if(x_min>point_list[i].first){
+                    x_min = point_list[i].first;
+                }
+                else if(x_max<point_list[i].first){
+                    x_max = point_list[i].first;
+                }
+            }
+		}
 
 		printf("Smaller slopes\n");
 		for(int i=0;i<lower_slope_lines.size();i++){
@@ -378,6 +411,8 @@ vector<pair<double,double>> upper_bridge(vector<pair<double,double>> point_list)
 		for(int i=0;i<higher_slope_lines.size();i++){
 			printf("%lf,%lf;%lf,%lf\n",higher_slope_lines[i].first.first,higher_slope_lines[i].first.second,higher_slope_lines[i].second.first,higher_slope_lines[i].second.second);
 		}
+
+        printf("The support line extrema are %lf and %lf\n",x_min,x_max);
 		//other shit
 
 
@@ -524,7 +559,7 @@ vector<pair<double,double>> KPS(vector<pair<double,double>> point_list){
     // 	printf("%lf,%lf\n",lower_hull_points[i].first,lower_hull_points[i].second);
     // }
 
-    upper_hull(lower_hull_points);
+    upper_hull(upper_hull_points);
 
     return point_list;
 }
@@ -548,7 +583,7 @@ int main(){
         file.close();
         vector<pair<double,double>> convex_hull = KPS(point_list);
 
-        pair<double,double> answer = median(point_list,point_list.size());
+        pair<double,double> answer = median(point_list,point_list.size()/2);
         printf("\n\nThe median is %lf %lf\n", answer.first,answer.second);
     }
     else{
