@@ -181,7 +181,7 @@ T median_of_median(vector<T> point_list){
             grid.push_back(temp);
             temp.clear();
     }
-    // sort the buckets dirtily
+    // sort the buckets directly
     for(int index = 0; index < num_buckets; index++){
 
         for(int i = 0; i < grid[index].size(); i++){
@@ -274,31 +274,258 @@ tuple<pair<double,double>,pair<double,double>,int,int > get_corner_points(vector
     tuple<pair<double,double>,pair<double,double>,int,int > answer = make_tuple(min,max,location_min,location_max);
     return  answer;
 }
+
+vector<pair<double,double>> upper_bridge(vector<pair<double,double>> point_list){
+	pair<double,double> the_median= median(point_list,point_list.size()/2);
+	printf("the median is %lf,%lf\n",the_median.first,the_median.second);
+	vector<pair<double,double>> left,right,candidates;
+	pair<double,double> top_most_median = the_median;
+	for(int i=0;i<point_list.size();i++){
+		if(point_list[i].first<the_median.first){
+			left.push_back(point_list[i]);
+		}
+		else if(point_list[i].first>the_median.first){
+			right.push_back(point_list[i]);
+		}
+		else{
+			if(point_list[i].second>top_most_median.second){
+				top_most_median=point_list[i];
+			}
+		}
+	}
+
+		candidates.push_back(top_most_median);
+		printf("Left has\n");
+		for(int i=0;i<left.size();i++){
+			printf("%lf,%lf\n",left[i].first, left[i].second);
+		}
+
+		printf("Right has\n");
+		for(int i=0;i<right.size();i++){
+			printf("%lf,%lf\n",right[i].first, right[i].second);
+		}
+
+		printf("Candidates has\n");
+		for(int i=0;i<candidates.size();i++){
+			printf("%lf,%lf\n",candidates[i].first, candidates[i].second);
+		}
+
+		vector<pair<pair<double,double>,pair<double,double>>> lines;
+		for(int i=0;i<point_list.size()-1;i+=2){ // if we have an even number of elements, we need to go to the second last one
+			if(point_list[i].first<point_list[i+1].first)
+				lines.push_back(make_pair(point_list[i],point_list[i+1]));
+			else
+				lines.push_back(make_pair(point_list[i+1],point_list[i]));
+		}
+		if(point_list.size()%2==1){
+			candidates.push_back(point_list[point_list.size()-1]);
+		}
+
+		printf("Lines has \n");
+		for(int i=0;i<lines.size();i++){
+			printf("%lf,%lf;%lf,%lf\n",lines[i].first.first,lines[i].first.second,lines[i].second.first,lines[i].second.second);
+		}
+
+		vector<pair<double,pair< pair<double,double>,pair<double,double> > > > slopeMap;
+		for(int i=0;i<lines.size();i++){
+			double slope=(lines[i].second.second-lines[i].first.second)/(lines[i].second.first-lines[i].first.first);
+			slopeMap.push_back(make_pair(slope,lines[i]));
+		} 
+
+		pair<double,pair< pair<double,double>,pair<double,double> > > median_line = median(slopeMap,slopeMap.size()/2);
+		printf("The median slope is %lf:%lf,%lf;%lf,%lf",median_line.first,median_line.second.first.first,median_line.second.first.second,median_line.second.second.first,median_line.second.second.second);
+
+		vector<pair<pair<double,double>,pair<double,double>>> lower_slope_lines,higher_slope_lines,equal_slope_lines;
+		printf("The slopes for the lines are \n");
+		for(int i=0;i<slopeMap.size();i++){
+			if(slopeMap[i].first<median_line.first){
+				lower_slope_lines.push_back(slopeMap[i].second);
+				printf("%lf;%lf,%lf|%lf,%lf\n",slopeMap[i].first,slopeMap[i].second.first.first,slopeMap[i].second.first.second,slopeMap[i].second.second.first,slopeMap[i].second.second.second);
+			}
+			else if(slopeMap[i].first>median_line.first){
+				higher_slope_lines.push_back(slopeMap[i].second);
+				printf("%lf;%lf,%lf|%lf,%lf\n",slopeMap[i].first,slopeMap[i].second.first.first,slopeMap[i].second.first.second,slopeMap[i].second.second.first,slopeMap[i].second.second.second);
+			}
+			else{
+				equal_slope_lines.push_back(slopeMap[i].second);
+				printf("%lf;%lf,%lf|%lf,%lf\n",slopeMap[i].first,slopeMap[i].second.first.first,slopeMap[i].second.first.second,slopeMap[i].second.second.first,slopeMap[i].second.second.second);
+			}
+		}
+
+		double slope = median_line.first;
+		int index_of_desired_point = 0;
+		double intercept = point_list[0].second - slope*point_list[0].first;
+
+		for(int i=1;i<point_list.size();i++){
+			double temp_intercept = left[i].second - slope*point_list[i].first;
+			if(temp_intercept>intercept){
+				index_of_desired_point=i;
+				intercept=temp_intercept;
+			}	
+		}// TODO handle zero elements
+
+		printf("Smaller slopes\n");
+		for(int i=0;i<lower_slope_lines.size();i++){
+			printf("%lf,%lf;%lf,%lf\n",lower_slope_lines[i].first.first,lower_slope_lines[i].first.second,lower_slope_lines[i].second.first,lower_slope_lines[i].second.second);
+		}
+
+		printf("Equal slopes\n");
+		for(int i=0;i<equal_slope_lines.size();i++){
+			printf("%lf,%lf;%lf,%lf\n",equal_slope_lines[i].first.first,equal_slope_lines[i].first.second,equal_slope_lines[i].second.first,equal_slope_lines[i].second.second);
+		}
+
+		printf("Higher slopes\n");
+		for(int i=0;i<higher_slope_lines.size();i++){
+			printf("%lf,%lf;%lf,%lf\n",higher_slope_lines[i].first.first,higher_slope_lines[i].first.second,higher_slope_lines[i].second.first,higher_slope_lines[i].second.second);
+		}
+		//other shit
+
+
+		vector<pair<double,double>> answer;
+		if(candidates.size()<=3){
+			if(candidates.size()==2){
+				if(candidates[0].first<candidates[1].first){
+					answer.push_back(candidates[0]);
+					answer.push_back(candidates[1]);
+				}
+				else{// Both can't be equal as we eliminate such cases
+					answer.push_back(candidates[1]);	
+					answer.push_back(candidates[0]);
+				}
+			}
+			else{// size is one or three
+				answer.push_back(candidates[0]);
+			}
+			return answer;
+		}
+
+}
+
+
+tuple<pair<double,double>,pair<double,double>> lower_bridge(vector<pair<double,double>> point_list){
+	
+}
+
+vector<pair<double,double>> upper_hull(vector<pair<double,double>> point_list){
+
+	vector<pair<double,double>> answer;
+	printf("The input to upper_hull is\n");
+	for(int i=0;i<point_list.size();i++){
+		printf("%lf,%lf\n",point_list[i].first,point_list[i].second);
+	}
+	if(point_list.size()==1){
+		answer.push_back(point_list[0]);
+		return answer;
+	}
+	else if(point_list.size()==2){
+		if(point_list[0].first<point_list[1].first){
+			answer.push_back(point_list[0]);
+			answer.push_back(point_list[1]);
+			return answer;		
+		}
+		else if(point_list[0].first>point_list[1].first){
+			answer.push_back(point_list[1]);
+			answer.push_back(point_list[0]);
+			return answer;	
+		}
+		else{// If both have the same x value
+			if(point_list[0].second>point_list[1].second){
+				answer.push_back(point_list[0]);
+				return answer;
+			}
+			else if(point_list[0].second<=point_list[1].second){
+				answer.push_back(point_list[1]);
+				return answer;	
+			}
+		}
+	}
+	else{
+		upper_bridge(point_list);
+	}
+	return point_list;
+}
+
+vector<pair<double,double>> lower_hull(vector<pair<double,double>> point_list){
+	return point_list;
+}
+
 vector<pair<double,double>> KPS(vector<pair<double,double>> point_list){
     // pmin and pmax
     // Call Upper Hull -> Upper Bridge
     // Call Lower Hull -> Lower Bridge
     // Join them
+
+	// if (point_list.size() <= 2)
+	// 	return NULL;
+
+	// if size == 3 sort w.r.t x coordinate and return 
+	//TO DO Collinearity check
+
+
     vector<pair<double,double>> upper_hull_points,lower_hull_points;
     
     tuple<pair<double,double>,pair<double,double>,int,int > corner_point_upper = get_corner_points(point_list,true);
     upper_hull_points.push_back(get<0>(corner_point_upper));
+    
+    point_list.erase(point_list.begin()+get<2>(corner_point_upper));
+    point_list.erase(point_list.begin()+get<3>(corner_point_upper));
+
     double slope = (get<0>(corner_point_upper).second - get<1>(corner_point_upper).second ) / ( get<0>(corner_point_upper).first - get<1>(corner_point_upper).first  );
     double intercept = (get<0>(corner_point_upper).second - slope * get<0>(corner_point_upper).first);
     for(int i=0;i<point_list.size();i++){
         if(point_list[i].second - slope* point_list[i].first > intercept){
             upper_hull_points.push_back(point_list[i]);
+            point_list.erase(point_list.begin()+i); // This will get rid of all the upper hull points
+            i--;
         }
     }
     
-    point_list.erase(point_list.begin()+get<2>(corner_point_upper));
-    point_list.erase(point_list.begin()+get<3>(corner_point_upper));
+
 
     upper_hull_points.push_back(get<1>(corner_point_upper));
 
+    // printf("The corner points are %lf,%lf and %lf,%lf\n",get<0>(corner_point_upper).first,get<0>(corner_point_upper).second,get<1>(corner_point_upper).first,get<1>(corner_point_upper).second);
+    // printf("The remaining are:\n");
+    // for(int i=0;i<point_list.size();i++){
+    // 	printf("%lf,%lf\n",point_list[i].first,point_list[i].second);
+    // }
+
     tuple<pair<double,double>,pair<double,double>,int,int > corner_point_lower = get_corner_points(point_list,false);
     
+    point_list.erase(point_list.begin()+get<2>(corner_point_lower));
+    point_list.erase(point_list.begin()+get<3>(corner_point_lower));
     
+    lower_hull_points.push_back(get<0>(corner_point_lower));
+    slope = (get<0>(corner_point_lower).second - get<1>(corner_point_lower).second ) / ( get<0>(corner_point_lower).first - get<1>(corner_point_lower).first  );
+    intercept = (get<0>(corner_point_lower).second - slope * get<0>(corner_point_lower).first);
+    for(int i=0;i<point_list.size();i++){
+        if(point_list[i].second - slope* point_list[i].first < intercept){
+            lower_hull_points.push_back(point_list[i]);
+            point_list.erase(point_list.begin()+i);
+            i--;
+        }
+    }
+
+    lower_hull_points.push_back(get<1>(corner_point_lower));
+
+    // printf("The corner points are %lf,%lf and %lf,%lf\n",get<0>(corner_point_lower).first,get<0>(corner_point_lower).second,get<1>(corner_point_lower).first,get<1>(corner_point_lower).second);
+    // printf("The remaining are:\n");
+    // for(int i=0;i<point_list.size();i++){
+    // 	printf("%lf,%lf\n",point_list[i].first,point_list[i].second);
+    // }
+    
+    // printf("The upper hull points are:\n");
+    // for(int i=0;i<upper_hull_points.size();i++){
+    // 	printf("%lf,%lf\n",upper_hull_points[i].first,upper_hull_points[i].second);
+    // }
+
+    // printf("The Lower hull points are:\n");
+    // for(int i=0;i<lower_hull_points.size();i++){
+    // 	printf("%lf,%lf\n",lower_hull_points[i].first,lower_hull_points[i].second);
+    // }
+
+    upper_hull(lower_hull_points);
+
     return point_list;
 }
 
