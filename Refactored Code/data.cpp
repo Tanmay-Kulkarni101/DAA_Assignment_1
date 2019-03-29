@@ -26,7 +26,7 @@ int Data::generateTestCases(int numberOfTestCases,double lower_bound,double uppe
 	else{
 		std::cout<<"Could not find the file location\n";
 	}
-	
+
 	return 0;
 }
 std::vector<std::string> Data::split(const char *str, char delim )
@@ -55,14 +55,15 @@ std::vector<Node> Data::get_data_from_file(){
 		std::string line;
 		while(std::getline(file,line)){
 			std::vector<std::string> temp = split(line.c_str(),delim.at(0));
+			std::cout<<temp[0]<<":"<<temp[1]<<"\n";
 			char* term;
 			double x = strtod(temp[0].c_str(),&term);
-			if(term!=NULL){
+			if(*term!=0){
 				std::cout<<"Not a double\n";
 				exit(EXIT_FAILURE);
 			}
 			double y = strtod(temp[1].c_str(),&term);
-			if(term!=NULL){
+			if(*term!=0){
 				std::cout<<"Not a double\n";
 				exit(EXIT_FAILURE);
 			}
@@ -70,6 +71,7 @@ std::vector<Node> Data::get_data_from_file(){
 			Node temp_node = Node(x,y);
 			values.push_back(temp_node);
 		}
+		std::cout<<"Data extracted successfully\n";
 	}
 	else{
 		std::cout<<"The file is not found, either the file is not generated or the path provided "<<filePath<< " is incorrect\n";
