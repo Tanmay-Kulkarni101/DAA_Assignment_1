@@ -8,6 +8,12 @@ Node::Node(double x,double y){
 std::pair<double,double> Node::getPoint(){
 	return std::make_pair(x,y);
 }
+double getX(){
+	return x;
+}
+double getY(){
+	return y;
+}
 bool Node::compareX(void* a,void* b){
 	Node val1=*((Node*)a);
 	Node val2=*((Node*)b);

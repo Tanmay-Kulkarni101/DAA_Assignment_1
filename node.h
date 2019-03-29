@@ -8,6 +8,8 @@ class Node{
 	public:
 	Node(double x,double y);
 	std::pair<double,double> getPoint();
+	double getX();
+	double getY();
 	static bool compareX(void* a,void* b);
 	bool operator <(Node operand2);
 	bool operator >(Node operand2);
