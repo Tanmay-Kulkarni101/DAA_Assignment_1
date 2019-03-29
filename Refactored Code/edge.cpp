@@ -5,9 +5,9 @@ Edge::Edge(Node point1, Node point2){
     this->point2 = point2;
     this->slope = (point2.getY()-point1.getY())/(point2.getX()-point1.getX());
     this->angle = atan(slope);
-    std::pair<double,double> p1 = point1.getPoint();
-    std::pair<double,double> p2 = point2.getPoint();
-    length = sqrt(pow(p1.first - p2.first,2) + pow(p1.second - p2.second,2));
+    Node p1 = point1.getPoint();
+    Node p2 = point2.getPoint();
+    length = sqrt(pow(p1.getX() - p2.getX(),2) + pow(p1.getY() - p2.getY(),2));
 }
 
 double Edge::get_slope(){

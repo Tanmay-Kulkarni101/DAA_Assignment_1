@@ -1,6 +1,6 @@
 #ifndef EDGE
 #define EDGE
-#include "node.cpp"
+#include "node.h"
 class Edge{
 	private:
 		Node point1,point2;

@@ -6,5 +6,6 @@ int main(){
 	Graph graph = Graph(data);
 	graph.displayPointList();
 
-	
+	graph.jarvis_march();
+    graph.displayConvexHull();
 }
