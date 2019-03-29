@@ -86,12 +86,12 @@
 		return answer;
 	}
 
-	void Graph::grahm_scan(){
+	void Graph::graham_scan(){
 		Node corner_point = get_left_most_point(false); // Taking the highest point on the left side
 		std::vector<Node> temp_point_list = pointList; // This does a deep copy and replaces the objects in the container
 
 		std::cout<<"The corner point is "<<corner_point.getX()<<" "<<corner_point.getY()<<'\n';
-		
+
 	}
 
 	void Graph::jarvis_march(){

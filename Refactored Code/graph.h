@@ -29,7 +29,7 @@ public:
 
 	Node get_right_most_point(bool flag_lower);
 
-	void grahm_scan();
+	void graham_scan();
 
 	void jarvis_march();
 

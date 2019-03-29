@@ -6,10 +6,11 @@ class Edge{
 		Node point1,point2;
 		double slope;
 		double angle;
+		double length;
 	public:
 		Edge(Node point1, Node point2);
-		double distance();
 		double get_slope();
 		double get_angle();
+		double get_length();
 };
 #endif
