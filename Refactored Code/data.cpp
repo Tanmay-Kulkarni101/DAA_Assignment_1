@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include  "data.h"
 
+const int Data::DATA_LINE_SIZE = 20;
 const std::string Data::DEFAULT_DELIM = " ";
 const std::string Data::DEFAULT_FILE_PATH = "./data/DataPoints.txt";
 int Data::generateTestCases(int numberOfTestCases,double lower_bound,double upper_bound){

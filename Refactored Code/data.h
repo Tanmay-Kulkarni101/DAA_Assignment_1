@@ -8,7 +8,7 @@ private:
 	std::string filePath;
 	std::string delim;
 	public:
-	static const int DATA_LINE_SIZE = 20;
+	static const int DATA_LINE_SIZE;
 	static const std::string DEFAULT_DELIM;
 	static const std::string DEFAULT_FILE_PATH;
 	int generateTestCases(int,double,double);

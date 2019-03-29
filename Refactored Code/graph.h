@@ -1,7 +1,11 @@
+/*
+The order of the includes is important, look at the dependencies file before making changes.
+*/
 #ifndef GRAPH
 #define GRAPH
 #include "node.h"
 #include "data.h"
+// #include "edge.h"
 #include <vector>
 #include <cstdlib>
 class Graph{
