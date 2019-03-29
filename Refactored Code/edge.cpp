@@ -21,3 +21,29 @@ double Edge::get_angle(){
 double Edge::get_length(){
     return length;
 }
+
+Node Edge::getX(){
+    return this->point1;
+}
+Node Edge::getY(){
+    return this->point2;
+}
+
+bool Edge::operator <(Edge operand2){
+	return this->get_slope() < operand2.get_slope() ? true : false ;
+}
+bool Edge::operator >(Edge operand2){
+	return this->get_slope() > operand2.get_slope() ? true : false ;
+}
+bool Edge::operator <=(Edge operand2){
+	return this->get_slope() <= operand2.get_slope() ? true : false ;
+}
+bool Edge::operator >=(Edge operand2){
+	return this->get_slope() >= operand2.get_slope() ? true : false ;
+}
+bool Edge::operator ==(Edge operand2){
+	return this->get_slope() == operand2.get_slope() ? true : false ;
+}
+bool Edge::operator !=(Edge operand2){
+	return this->get_slope() != operand2.get_slope() ? true : false ;
+}

@@ -5,7 +5,7 @@ The order of the includes is important, look at the dependencies file before mak
 #define GRAPH
 #include "node.h"
 #include "data.h"
-// #include "utilities.h"
+#include "utilities.h"
 #include "edge.h"
 #include <math.h>
 #include <vector>
@@ -40,7 +40,12 @@ public:
 
 	void jarvis_march();
 
-    // void kirk_patrick_seidel():
+	Edge upper_bridge(std::vector<Node> point_list);
+	Edge lower_bridge(std::vector<Node> point_list);
+	std::vector<Node> upper_hull(std::vector<Node> point_list);
+	std::vector<Node> lower_hull(std::vector<Node> point_list);
+
+    void kirk_patrick_seidel();
 };
 
 #endif

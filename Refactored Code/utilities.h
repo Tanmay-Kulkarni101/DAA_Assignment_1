@@ -1,13 +1,17 @@
 #ifndef UTILITIES
 #define UTILITIES
+
+using namespace std;
+
 template <class T>
 class Utilities{
+public:
     static T median_of_median(vector<T> point_list){
         // printf("baya\n");
         if(point_list.size() <= 5 && point_list.size() > 0){
             for(int i = 0; i < point_list.size()-1; i++){
                 for(int j = i+1; j < point_list.size(); j++){
-                    if(point_list[i].getX() > point_list[j].getX()){
+                    if(point_list[i] > point_list[j]){
                         T temp = point_list[i];
                         point_list[i] = point_list[j];
                         point_list[j] = temp;

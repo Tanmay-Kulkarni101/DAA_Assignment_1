@@ -208,7 +208,192 @@ void Graph::jarvis_march(){
     }
 }
 
+Edge Graph::upper_bridge(std::vector<Node> point_list){
+	Node the_median= Utilities<Node>::median(point_list,point_list.size()/2);
+	printf("the median is %lf,%lf\n",the_median.getX(),the_median.getY());
+	std::vector<Node> left,right,candidates;
+	Node top_most_median = the_median;
+	for(int i=0;i<point_list.size();i++){
+		if(point_list[i] < the_median){
+			left.push_back(point_list[i]);
+		}
+		else if(point_list[i] > the_median){
+			right.push_back(point_list[i]);
+		}
+		else{
+			if(point_list[i].getY()>top_most_median.getY()){
+				top_most_median=point_list[i];
+			}
+		}
+	}
 
+		candidates.push_back(top_most_median);
+		printf("Left has\n");
+		for(int i=0;i<left.size();i++){
+			printf("%lf,%lf\n",left[i].getX(), left[i].getY());
+		}
+
+		printf("Right has\n");
+		for(int i=0;i<right.size();i++){
+			printf("%lf,%lf\n",right[i].getX(), right[i].getY());
+		}
+
+		printf("Candidates has\n");
+		for(int i=0;i<candidates.size();i++){
+			printf("%lf,%lf\n",candidates[i].getX(), candidates[i].getY());
+		}
+
+		std::vector<Edge> lines;
+		for(int i=0;i<point_list.size()-1;i+=2){ // if we have an even number of elements, we need to go to the second last one
+			if(point_list[i] < point_list[i+1])
+				lines.push_back(Edge(point_list[i],point_list[i+1]));
+			else
+				lines.push_back(Edge(point_list[i+1],point_list[i]));
+		}
+		if(point_list.size()%2==1){
+			candidates.push_back(point_list[point_list.size()-1]);
+		}
+
+		printf("Lines has \n");
+		for(int i=0;i<lines.size();i++){
+			printf("slope: %lf, points:  %lf,%lf;%lf,%lf\n",lines[i].get_slope(),lines[i].getX().getX(),lines[i].getX().getY(),lines[i].getY().getX(),lines[i].getY().getY());
+		}
+
+
+		// replace this with lines and its slope with get_slope
+		// std::vector<Edges> slopeMap;
+
+		// for(int i=0;i<lines.size();i++){
+		// 	double slope=(lines[i].second.second-lines[i].first.second)/(lines[i].second.first-lines[i].first.first);
+		// 	slopeMap.push_back(make_pair(slope,lines[i]));
+		// }
+
+		Edge median_line = Utilities<Edge>::median(lines,lines.size()/2);
+		printf("The median slope is %lf:%lf,%lf;%lf,%lf\n",median_line.get_slope(),median_line.getX().getX(),median_line.getX().getY(),median_line.getY().getX(),median_line.getY().getY());
+
+		std::vector<Edge> lower_slope_lines,higher_slope_lines,equal_slope_lines;
+		printf("The slopes for the lines are \n");
+		for(int i=0;i<lines.size();i++){
+			if(lines[i] < median_line){
+				lower_slope_lines.push_back(lines[i]);
+				printf("lower: %lf:%lf,%lf;%lf,%lf\n",lines[i].get_slope(),lines[i].getX().getX(),lines[i].getX().getY(),lines[i].getY().getX(),lines[i].getY().getY());
+			}
+			else if(lines[i] > median_line){
+				higher_slope_lines.push_back(lines[i]);
+				printf("higher: %lf:%lf,%lf;%lf,%lf\n",lines[i].get_slope(),lines[i].getX().getX(),lines[i].getX().getY(),lines[i].getY().getX(),lines[i].getY().getY());
+			}
+			else{
+				equal_slope_lines.push_back(lines[i]);
+				printf("equal: %lf:%lf,%lf;%lf,%lf\n",lines[i].get_slope(),lines[i].getX().getX(),lines[i].getX().getY(),lines[i].getY().getX(),lines[i].getY().getY());
+			}
+		}
+
+		double slope = median_line.get_slope();
+		double x_min,x_max;
+		double intercept = point_list[0].getY() - slope*point_list[0].getX();
+        x_min = point_list[0].getX();
+        x_max = point_list[0].getX();
+		for(int i=1;i<point_list.size();i++){
+			double temp_intercept = point_list[i].getY() - slope*point_list[i].getX();
+			if(temp_intercept>intercept){
+				intercept=temp_intercept;
+                x_min = x_max = point_list[i].getX();
+			}
+            else if(temp_intercept==intercept){
+                if(x_min>point_list[i].getX()){
+                    x_min = point_list[i].getX();
+                }
+                else if(x_max<point_list[i].getX()){
+                    x_max = point_list[i].getX();
+                }
+            }
+		}
+
+		printf("Smaller slopes\n");
+		for(int i=0;i<lower_slope_lines.size();i++){
+			printf("%lf: %lf,%lf;%lf,%lf\n",lower_slope_lines[i].get_slope(),lower_slope_lines[i].getX().getX(),lower_slope_lines[i].getX().getY(),lower_slope_lines[i].getY().getX(),lower_slope_lines[i].getY().getY());
+		}
+
+		printf("Equal slopes\n");
+		for(int i=0;i<equal_slope_lines.size();i++){
+			printf("%lf: %lf,%lf;%lf,%lf\n",equal_slope_lines[i].get_slope(),equal_slope_lines[i].getX().getX(),equal_slope_lines[i].getX().getY(),equal_slope_lines[i].getY().getX(),equal_slope_lines[i].getY().getY());
+		}
+
+		printf("Higher slopes\n");
+		for(int i=0;i<higher_slope_lines.size();i++){
+			printf("%lf: %lf,%lf;%lf,%lf\n",higher_slope_lines[i].get_slope(),higher_slope_lines[i].getX().getX(),higher_slope_lines[i].getX().getY(),higher_slope_lines[i].getY().getX(),higher_slope_lines[i].getY().getY());
+		}
+
+        printf("The support line extrema are %lf and %lf\n",x_min,x_max);
+		//other shit
+
+
+		std::vector<Node> answer;
+		if(candidates.size() <= 3){
+			if(candidates.size() == 2){
+				if(candidates[0] < candidates[1]){
+					answer.push_back(candidates[0]);
+					answer.push_back(candidates[1]);
+				}
+				else{// Both can't be equal as we eliminate such cases
+					answer.push_back(candidates[1]);
+					answer.push_back(candidates[0]);
+				}
+			}
+			else{// size is one or three
+				answer.push_back(candidates[0]);
+			}
+			return Edge(answer[0],answer[1]);
+		}
+
+}
+
+Edge Graph::lower_bridge(std::vector<Node> point_list){
+
+}
+
+std::vector<Node> Graph::upper_hull(std::vector<Node> point_list){
+
+	std::vector<Node> answer;
+	printf("The input to upper_hull is\n");
+	for(int i=0;i<point_list.size();i++){
+		printf("%lf,%lf\n",point_list[i].getX(),point_list[i].getY());
+	}
+	if(point_list.size()==1){
+		answer.push_back(point_list[0]);
+		return answer;
+	}
+	else if(point_list.size()==2){
+		if(point_list[0] < point_list[1]){
+			answer.push_back(point_list[0]);
+			answer.push_back(point_list[1]);
+			return answer;
+		}
+		else if(point_list[0] > point_list[1]){
+			answer.push_back(point_list[1]);
+			answer.push_back(point_list[0]);
+			return answer;
+		}
+		else{// If both have the same x value
+			if(point_list[0].getY() > point_list[1].getY()){
+				answer.push_back(point_list[0]);
+				return answer;
+			}
+			else if(point_list[0].getY() <= point_list[1].getY()){
+				answer.push_back(point_list[1]);
+				return answer;
+			}
+		}
+	}
+	else{
+		upper_bridge(point_list);
+	}
+	return point_list;
+}
+
+std::vector<Node> Graph::lower_hull(std::vector<Node> point_list){
+	return point_list;
+}
 
 void Graph::kirk_patrick_seidel(){
     // pmin and pmax
@@ -223,18 +408,24 @@ void Graph::kirk_patrick_seidel(){
 	//TO DO Collinearity check
 
 
-    std::vector<pair<double,double>> upper_hull_points,lower_hull_points;
+    std::vector<Node> upper_hull_points,lower_hull_points;
 
-    tuple<pair<double,double>,pair<double,double>,int,int > corner_point_upper = get_corner_points(point_list,true);
-    upper_hull_points.push_back(get<0>(corner_point_upper));
+    // tuple<pair<double,double>,pair<double,double>,int,int > corner_point_upper = get_corner_points(point_list,true);
+	Node left_top = get_left_most_point(false);
+	Node right_top = get_right_most_point(false);
+	Node left_bottom = get_left_most_point(true);
+	Node right_bottom = get_right_most_point(true);
 
-    point_list.erase(point_list.begin()+get<2>(corner_point_upper));
-    point_list.erase(point_list.begin()+get<3>(corner_point_upper));
+    upper_hull_points.push_back(left_top);
 
-    double slope = (get<0>(corner_point_upper).second - get<1>(corner_point_upper).second ) / ( get<0>(corner_point_upper).first - get<1>(corner_point_upper).first  );
-    double intercept = (get<0>(corner_point_upper).second - slope * get<0>(corner_point_upper).first);
+	point_list.erase(std::remove(point_list.begin(),point_list.end(),left_top),point_list.end());
+	point_list.erase(std::remove(point_list.begin(),point_list.end(),right_top),point_list.end());
+
+	double slope = Edge(left_top,right_top).get_slope();
+	// double slope = (get<0>(corner_point_upper).second - get<1>(corner_point_upper).second ) / ( get<0>(corner_point_upper).first - get<1>(corner_point_upper).first  );
+    double intercept = (left_top.getY() - slope * left_top.getX());
     for(int i=0;i<point_list.size();i++){
-        if(point_list[i].second - slope* point_list[i].first > intercept){
+        if(point_list[i].getY() - slope* point_list[i].getX() > intercept){
             upper_hull_points.push_back(point_list[i]);
             point_list.erase(point_list.begin()+i); // This will get rid of all the upper hull points
             i--;
@@ -243,7 +434,7 @@ void Graph::kirk_patrick_seidel(){
 
 
 
-    upper_hull_points.push_back(get<1>(corner_point_upper));
+    upper_hull_points.push_back(right_top);
 
     // printf("The corner points are %lf,%lf and %lf,%lf\n",get<0>(corner_point_upper).first,get<0>(corner_point_upper).second,get<1>(corner_point_upper).first,get<1>(corner_point_upper).second);
     // printf("The remaining are:\n");
@@ -251,23 +442,26 @@ void Graph::kirk_patrick_seidel(){
     // 	printf("%lf,%lf\n",point_list[i].first,point_list[i].second);
     // }
 
-    tuple<pair<double,double>,pair<double,double>,int,int > corner_point_lower = get_corner_points(point_list,false);
+    // tuple<pair<double,double>,pair<double,double>,int,int > corner_point_lower = get_corner_points(point_list,false);
 
-    point_list.erase(point_list.begin()+get<2>(corner_point_lower));
-    point_list.erase(point_list.begin()+get<3>(corner_point_lower));
+    // point_list.erase(point_list.begin()+get<2>(corner_point_lower));
+    // point_list.erase(point_list.begin()+get<3>(corner_point_lower));
+	point_list.erase(std::remove(point_list.begin(),point_list.end(),left_bottom),point_list.end());
+	point_list.erase(std::remove(point_list.begin(),point_list.end(),right_bottom),point_list.end());
 
-    lower_hull_points.push_back(get<0>(corner_point_lower));
-    slope = (get<0>(corner_point_lower).second - get<1>(corner_point_lower).second ) / ( get<0>(corner_point_lower).first - get<1>(corner_point_lower).first  );
-    intercept = (get<0>(corner_point_lower).second - slope * get<0>(corner_point_lower).first);
+    lower_hull_points.push_back(left_bottom);
+    // slope = (get<0>(corner_point_lower).second - get<1>(corner_point_lower).second ) / ( get<0>(corner_point_lower).first - get<1>(corner_point_lower).first  );
+	slope = Edge(left_bottom,right_bottom).get_slope();
+    intercept = (left_bottom.getY() - slope * left_bottom.getX());
     for(int i=0;i<point_list.size();i++){
-        if(point_list[i].second - slope* point_list[i].first < intercept){
+        if(point_list[i].getY() - slope* point_list[i].getX() < intercept){
             lower_hull_points.push_back(point_list[i]);
             point_list.erase(point_list.begin()+i);
             i--;
         }
     }
 
-    lower_hull_points.push_back(get<1>(corner_point_lower));
+    lower_hull_points.push_back(right_bottom);
 
     // printf("The corner points are %lf,%lf and %lf,%lf\n",get<0>(corner_point_lower).first,get<0>(corner_point_lower).second,get<1>(corner_point_lower).first,get<1>(corner_point_lower).second);
     // printf("The remaining are:\n");
