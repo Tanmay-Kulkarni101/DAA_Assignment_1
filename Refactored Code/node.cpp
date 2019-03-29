@@ -18,7 +18,7 @@ double Node::getX(){
 double Node::getY(){
 	return y;
 }
-bool Node::compareX(void* a,void* b){
+static bool Node::compareX(void* a,void* b){
 	Node val1=*((Node*)a);
 	Node val2=*((Node*)b);
 
@@ -28,6 +28,16 @@ bool Node::compareX(void* a,void* b){
 	else{
 		return false;
 	}
+}
+
+static double Node::polar_angler(Node source, Node target){
+    return atan((target.getY()-source.getY())/(target.getX()-source.getX()));
+}
+
+static bool Node::get_orientation(Node p, Node q, Node r){
+    double temp = (q.getX()-p.getX())*(r.gety()-q.gety()) - (q.gety()-p.gety())*(r.getX()-q.getX());
+    if(temp > 0) return true;
+    else return false;
 }
 
 bool Node::operator <(Node operand2){

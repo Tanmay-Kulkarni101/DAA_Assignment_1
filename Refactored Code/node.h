@@ -12,6 +12,8 @@ class Node{
 	double getX();
 	double getY();
 	static bool compareX(void* a,void* b);
+    static double polar_angler(Node source, Node target);
+    static bool get_orientation(Node p, Node q, Node r);
 	bool operator <(Node operand2);
 	bool operator >(Node operand2);
 	bool operator <=(Node operand2);

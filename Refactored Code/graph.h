@@ -10,8 +10,8 @@ The order of the includes is important, look at the dependencies file before mak
 #include <cstdlib>
 class Graph{
 private:
-	std::vector<Node> convexHull;
-	std::vector<Node> pointList;
+	std::vector<Node> convex_hull;
+	std::vector<Node> point_list;
 
 public:
 
@@ -19,7 +19,7 @@ public:
 
 	std::vector<Node> getPointList();
 
-	void setPointList(std::vector<Node> &pointList);
+	void setPointList(std::vector<Node> &point_list);
 
 	void displayPointList();
 
@@ -33,6 +33,7 @@ public:
 
 	void jarvis_march();
 
+    void kirk_patrick_seidel():
 };
 
 #endif
