@@ -1,14 +1,15 @@
 #include "edge.h"
 
 Edge::Edge(Node point1, Node point2){
-    this->point1 = point1;
-    this->point2 = point2;
 
     if(point1 > point2){
         Node temp = point1;
         point1 = point2;
         point2 = temp;  
     }
+    
+    this->point1 = point1;
+    this->point2 = point2;
     if(point2.getX() != point1.getX())
         this->slope = (point2.getY()-point1.getY())/(point2.getX()-point1.getX());
     else if(point2.getY() > point1.getY())
