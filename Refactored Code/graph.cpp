@@ -30,7 +30,7 @@ bool Graph::get_orientation(Node p,Node q,Node r){
 	}
 }
 
-Node Graph::get_left_most_point(bool flag_lower){// if the flag is false we find the upper most point
+Node Graph::get_left_most_point(bool flag_lower,vector<Node> point_list){// if the flag is false we find the upper most point
 	if(point_list.size()==0){ // Size check
 		std::cout << "The size of the list is zero" << '\n';
 		exit(EXIT_FAILURE);
@@ -58,7 +58,7 @@ Node Graph::get_left_most_point(bool flag_lower){// if the flag is false we find
 	return answer;
 }
 
-Node Graph::get_right_most_point(bool flag_lower){// if the flag is false we find the upper most point
+Node Graph::get_right_most_point(bool flag_lower,vector<Node> point_list){// if the flag is false we find the upper most point
 	if(point_list.size()==0){ // Size check
 		std::cout << "The size of the list is zero" << '\n';
 		exit(EXIT_FAILURE);
@@ -102,7 +102,7 @@ void Graph::displayConvexHull(){
 }
 
 void Graph::graham_scan(){
-	Node corner_point = get_left_most_point(false); // Taking the highest point on the left side
+	Node corner_point = get_left_most_point(false,this->point_list); // Taking the highest point on the left side
 	std::vector<Node> temp_point_list = point_list; // This does a deep copy and replaces the objects in the container
 
 	std::cout<<"The corner point is "<<corner_point.getX()<<" "<<corner_point.getY()<<'\n';
@@ -154,7 +154,7 @@ void Graph::graham_scan(){
 }
 
 void Graph::jarvis_march(){
-    Node corner_point = get_left_most_point(false);
+    Node corner_point = get_left_most_point(false,this->point_list);
     std::cout<<"The corner point is "<<corner_point.getX()<<" "<<corner_point.getY()<<std::endl;
     //remove the corner point
     std::vector<Node>::iterator iterTemp = std::remove(point_list.begin(), point_list.end(), corner_point);
@@ -220,14 +220,14 @@ Edge Graph::upper_bridge(std::vector<Node> point_list){
 		else if(point_list[i] > the_median){
 			right.push_back(point_list[i]);
 		}
-		else{
-			if(point_list[i].getY()>top_most_median.getY()){
-				top_most_median=point_list[i];
-			}
-		}
+		// else{
+		// 	if(point_list[i].getY()>top_most_median.getY()){
+		// 		top_most_median=point_list[i];
+		// 	}
+		// }
 	}
 
-		candidates.push_back(top_most_median);
+		// candidates.push_back(top_most_median);
 		printf("Left has\n");
 		for(int i=0;i<left.size();i++){
 			printf("%lf,%lf\n",left[i].getX(), left[i].getY());
@@ -289,22 +289,22 @@ Edge Graph::upper_bridge(std::vector<Node> point_list){
 		}
 
 		double slope = median_line.get_slope();
-		double x_min,x_max;
+		Node node_min,node_max;
 		double intercept = point_list[0].getY() - slope*point_list[0].getX();
-        x_min = point_list[0].getX();
-        x_max = point_list[0].getX();
+        node_min = point_list[0];
+        node_max = point_list[0];
 		for(int i=1;i<point_list.size();i++){
 			double temp_intercept = point_list[i].getY() - slope*point_list[i].getX();
 			if(temp_intercept>intercept){
 				intercept=temp_intercept;
-                x_min = x_max = point_list[i].getX();
+                node_min = node_max = point_list[i];
 			}
             else if(temp_intercept==intercept){
-                if(x_min>point_list[i].getX()){
-                    x_min = point_list[i].getX();
+                if(node_min>point_list[i]){
+                    node_min = point_list[i];
                 }
-                else if(x_max<point_list[i].getX()){
-                    x_max = point_list[i].getX();
+                else if(node_max<point_list[i]){
+                    node_max = point_list[i];
                 }
             }
 		}
@@ -324,12 +324,48 @@ Edge Graph::upper_bridge(std::vector<Node> point_list){
 			printf("%lf: %lf,%lf;%lf,%lf\n",higher_slope_lines[i].get_slope(),higher_slope_lines[i].getX().getX(),higher_slope_lines[i].getX().getY(),higher_slope_lines[i].getY().getX(),higher_slope_lines[i].getY().getY());
 		}
 
-        printf("The support line extrema are %lf and %lf\n",x_min,x_max);
-		//other shit
+        printf("The support line extrema are %lf and %lf\n",node_min.getX(),node_max.getX());
 
+		// distance is zero if there is only one point
+		if(node_min <= the_median && node_max >= the_median){
+			puts("got the bridge");
+			return Edge(node_min,node_max);
+		}
 
+		else if(node_min < the_median && node_max < the_median){
+			puts("bridge on the left");
+			for(auto it = higher_slope_lines.begin(); it < higher_slope_lines.end(); it++){
+				candidates.push_back(it->getY());
+			}
+			for(auto it = equal_slope_lines.begin(); it < equal_slope_lines.end(); it++){
+				candidates.push_back(it->getY());
+			}
+			for(auto it = lower_slope_lines.begin(); it < lower_slope_lines.end(); it++){
+				candidates.push_back(it->getX());
+				candidates.push_back(it->getY());
+			}
+		}
+		else if(node_min > the_median && node_max > the_median){
+			puts("bridge on the right");
+			for(auto it = lower_slope_lines.begin(); it < lower_slope_lines.end(); it++){
+				candidates.push_back(it->getX());
+			}
+			for(auto it = equal_slope_lines.begin(); it < equal_slope_lines.end(); it++){
+				candidates.push_back(it->getX());
+			}
+			for(auto it = higher_slope_lines.begin(); it < higher_slope_lines.end(); it++){
+				candidates.push_back(it->getX());
+				candidates.push_back(it->getY());
+			}
+		}
+		puts("printing candidates");
+		for(auto it = candidates.begin(); it < candidates.end(); it++){
+			it->print_node();
+		}
 		std::vector<Node> answer;
-		if(candidates.size() <= 3){
+		if(candidates.size() <= 2){
+			puts("Entering base cases");
+			printf("candidate sizes %lu\n",candidates.size());
 			if(candidates.size() == 2){
 				if(candidates[0] < candidates[1]){
 					answer.push_back(candidates[0]);
@@ -340,19 +376,193 @@ Edge Graph::upper_bridge(std::vector<Node> point_list){
 					answer.push_back(candidates[0]);
 				}
 			}
-			else{// size is one or three
+			else{// size is one
 				answer.push_back(candidates[0]);
 			}
 			return Edge(answer[0],answer[1]);
 		}
-
+		puts("About to recurse");
+		return upper_bridge(candidates);
 }
 
 Edge Graph::lower_bridge(std::vector<Node> point_list){
+	Node the_median= Utilities<Node>::median(point_list,point_list.size()/2);
+	printf("the median is %lf,%lf\n",the_median.getX(),the_median.getY());
+	std::vector<Node> left,right,candidates;
+	Node top_most_median = the_median;
+	for(int i=0;i<point_list.size();i++){
+		if(point_list[i] < the_median){
+			left.push_back(point_list[i]);
+		}
+		else if(point_list[i] > the_median){
+			right.push_back(point_list[i]);
+		}
+		// else{
+		// 	if(point_list[i].getY()>top_most_median.getY()){
+		// 		top_most_median=point_list[i];
+		// 	}
+		// }
+	}
 
+		// candidates.push_back(top_most_median);
+		printf("Left has\n");
+		for(int i=0;i<left.size();i++){
+			printf("%lf,%lf\n",left[i].getX(), left[i].getY());
+		}
+
+		printf("Right has\n");
+		for(int i=0;i<right.size();i++){
+			printf("%lf,%lf\n",right[i].getX(), right[i].getY());
+		}
+
+		printf("Candidates has\n");
+		for(int i=0;i<candidates.size();i++){
+			printf("%lf,%lf\n",candidates[i].getX(), candidates[i].getY());
+		}
+
+		std::vector<Edge> lines;
+		for(int i=0;i<point_list.size()-1;i+=2){ // if we have an even number of elements, we need to go to the second last one
+			if(point_list[i] < point_list[i+1])
+				lines.push_back(Edge(point_list[i],point_list[i+1]));
+			else
+				lines.push_back(Edge(point_list[i+1],point_list[i]));
+		}
+		if(point_list.size()%2==1){
+			candidates.push_back(point_list[point_list.size()-1]);
+		}
+
+		printf("Lines has \n");
+		for(int i=0;i<lines.size();i++){
+			printf("slope: %lf, points:  %lf,%lf;%lf,%lf\n",lines[i].get_slope(),lines[i].getX().getX(),lines[i].getX().getY(),lines[i].getY().getX(),lines[i].getY().getY());
+		}
+
+
+		// replace this with lines and its slope with get_slope
+		// std::vector<Edges> slopeMap;
+
+		// for(int i=0;i<lines.size();i++){
+		// 	double slope=(lines[i].second.second-lines[i].first.second)/(lines[i].second.first-lines[i].first.first);
+		// 	slopeMap.push_back(make_pair(slope,lines[i]));
+		// }
+
+		Edge median_line = Utilities<Edge>::median(lines,lines.size()/2);
+		printf("The median slope is %lf:%lf,%lf;%lf,%lf\n",median_line.get_slope(),median_line.getX().getX(),median_line.getX().getY(),median_line.getY().getX(),median_line.getY().getY());
+
+		std::vector<Edge> lower_slope_lines,higher_slope_lines,equal_slope_lines;
+		printf("The slopes for the lines are \n");
+		for(int i=0;i<lines.size();i++){
+			if(lines[i] < median_line){
+				lower_slope_lines.push_back(lines[i]);
+				printf("lower: %lf:%lf,%lf;%lf,%lf\n",lines[i].get_slope(),lines[i].getX().getX(),lines[i].getX().getY(),lines[i].getY().getX(),lines[i].getY().getY());
+			}
+			else if(lines[i] > median_line){
+				higher_slope_lines.push_back(lines[i]);
+				printf("higher: %lf:%lf,%lf;%lf,%lf\n",lines[i].get_slope(),lines[i].getX().getX(),lines[i].getX().getY(),lines[i].getY().getX(),lines[i].getY().getY());
+			}
+			else{
+				equal_slope_lines.push_back(lines[i]);
+				printf("equal: %lf:%lf,%lf;%lf,%lf\n",lines[i].get_slope(),lines[i].getX().getX(),lines[i].getX().getY(),lines[i].getY().getX(),lines[i].getY().getY());
+			}
+		}
+
+		double slope = median_line.get_slope();
+		Node node_min,node_max;
+		double intercept = point_list[0].getY() - slope*point_list[0].getX();
+        node_min = point_list[0];
+        node_max = point_list[0];
+		for(int i=1;i<point_list.size();i++){
+			double temp_intercept = point_list[i].getY() - slope*point_list[i].getX();
+			if(temp_intercept>intercept){
+				intercept=temp_intercept;
+                node_min = node_max = point_list[i];
+			}
+            else if(temp_intercept==intercept){
+                if(node_min>point_list[i]){
+                    node_min = point_list[i];
+                }
+                else if(node_max<point_list[i]){
+                    node_max = point_list[i];
+                }
+            }
+		}
+
+		printf("Smaller slopes\n");
+		for(int i=0;i<lower_slope_lines.size();i++){
+			printf("%lf: %lf,%lf;%lf,%lf\n",lower_slope_lines[i].get_slope(),lower_slope_lines[i].getX().getX(),lower_slope_lines[i].getX().getY(),lower_slope_lines[i].getY().getX(),lower_slope_lines[i].getY().getY());
+		}
+
+		printf("Equal slopes\n");
+		for(int i=0;i<equal_slope_lines.size();i++){
+			printf("%lf: %lf,%lf;%lf,%lf\n",equal_slope_lines[i].get_slope(),equal_slope_lines[i].getX().getX(),equal_slope_lines[i].getX().getY(),equal_slope_lines[i].getY().getX(),equal_slope_lines[i].getY().getY());
+		}
+
+		printf("Higher slopes\n");
+		for(int i=0;i<higher_slope_lines.size();i++){
+			printf("%lf: %lf,%lf;%lf,%lf\n",higher_slope_lines[i].get_slope(),higher_slope_lines[i].getX().getX(),higher_slope_lines[i].getX().getY(),higher_slope_lines[i].getY().getX(),higher_slope_lines[i].getY().getY());
+		}
+
+        printf("The support line extrema are %lf and %lf\n",node_min.getX(),node_max.getX());
+
+		// distance is zero if there is only one point
+		if(node_min <= the_median && node_max >= the_median){
+			puts("got the bridge");
+			return Edge(node_min,node_max);
+		}
+
+		else if(node_min < the_median && node_max < the_median){
+			puts("bridge on the left");
+			for(auto it = higher_slope_lines.begin(); it < higher_slope_lines.end(); it++){
+				candidates.push_back(it->getY());
+			}
+			for(auto it = equal_slope_lines.begin(); it < equal_slope_lines.end(); it++){
+				candidates.push_back(it->getY());
+			}
+			for(auto it = lower_slope_lines.begin(); it < lower_slope_lines.end(); it++){
+				candidates.push_back(it->getX());
+				candidates.push_back(it->getY());
+			}
+		}
+		else if(node_min > the_median && node_max > the_median){
+			puts("bridge on the right");
+			for(auto it = lower_slope_lines.begin(); it < lower_slope_lines.end(); it++){
+				candidates.push_back(it->getX());
+			}
+			for(auto it = equal_slope_lines.begin(); it < equal_slope_lines.end(); it++){
+				candidates.push_back(it->getX());
+			}
+			for(auto it = higher_slope_lines.begin(); it < higher_slope_lines.end(); it++){
+				candidates.push_back(it->getX());
+				candidates.push_back(it->getY());
+			}
+		}
+		puts("printing candidates");
+		for(auto it = candidates.begin(); it < candidates.end(); it++){
+			it->print_node();
+		}
+		std::vector<Node> answer;
+		if(candidates.size() <= 2){
+			puts("Entering base cases");
+			printf("candidate sizes %lu\n",candidates.size());
+			if(candidates.size() == 2){
+				if(candidates[0] < candidates[1]){
+					answer.push_back(candidates[0]);
+					answer.push_back(candidates[1]);
+				}
+				else{// Both can't be equal as we eliminate such cases
+					answer.push_back(candidates[1]);
+					answer.push_back(candidates[0]);
+				}
+			}
+			else{// size is one
+				answer.push_back(candidates[0]);
+			}
+			return Edge(answer[0],answer[1]);
+		}
+		puts("About to recurse");
+		return upper_bridge(candidates);
 }
 
-std::vector<Node> Graph::upper_hull(std::vector<Node> point_list){
+std::vector<Node> Graph::upper_hull(std::vector<Node> point_list,Node p_min, Node p_max){
 
 	std::vector<Node> answer;
 	printf("The input to upper_hull is\n");
@@ -386,12 +596,119 @@ std::vector<Node> Graph::upper_hull(std::vector<Node> point_list){
 		}
 	}
 	else{
-		upper_bridge(point_list);
+		std::vector<Node> left_points,right_points;
+		left_points.push_back(p_min);
+		right_points.push_back(p_max);
+
+		Edge the_bridge = upper_bridge(point_list);
+		the_bridge.print_edge();
+		Edge trapeziod_bottom = Edge(p_min,p_max);
+		Edge trapeziod_left = Edge(p_min,the_bridge.getX());
+		Edge trapeziod_right = Edge(the_bridge.getY(),p_max);
+		puts("orientations");
+		for(auto it = point_list.begin(); it < point_list.end(); it++){
+			printf("The point is: ");
+			it->print_node();
+			printf("bottom\t %d\n",get_orientation(trapeziod_bottom.getX(),trapeziod_bottom.getY(),*it));
+			printf("left\t %d\n",get_orientation(trapeziod_left.getX(),trapeziod_left.getY(),*it));
+			printf("bridge\t %d\n",get_orientation(the_bridge.getX(),the_bridge.getY(),*it));
+			printf("right\t %d\n",get_orientation(trapeziod_right.getX(),trapeziod_right.getY(),*it));
+			// We ignore vertices of the trapeziod
+			// if(	!get_orientation(trapeziod_bottom.getX(),trapeziod_bottom.getY(),*it) &&
+			// 	!get_orientation(trapeziod_left.getX(),trapeziod_left.getY(),*it) && 
+			// 	!get_orientation(trapeziod_right.getX(),trapeziod_right.getY(),*it) && 
+			// 	!get_orientation(the_bridge.getX(),the_bridge.getY(),*it)){
+			// 	puts("ignore on the border");
+			// 	continue;		
+			// }
+			// we ignore internal points
+			if(	get_orientation(trapeziod_bottom.getX(),trapeziod_bottom.getY(),*it) && 
+					!get_orientation(trapeziod_left.getX(),trapeziod_left.getY(),*it) && 
+					!get_orientation(trapeziod_right.getX(),trapeziod_right.getY(),*it) && 
+					!get_orientation(the_bridge.getX(),the_bridge.getY(),*it)){
+					puts("ignore within");
+					continue;		
+				}
+			else if(get_orientation(trapeziod_left.getX(),trapeziod_left.getY(),*it)){
+				left_points.push_back(*it);
+				puts("entered left");
+			}
+			else if(get_orientation(trapeziod_right.getX(),trapeziod_right.getY(),*it)){
+				puts("entered left");
+				right_points.push_back(*it);
+			}
+			else{
+				// it is a vertex, ignore
+				puts("ignoring vertex");
+			}
+		}
+
+
+		puts("RIGHT: points");
+		for(auto it = right_points.begin(); it < right_points.end(); it++){
+			it->print_node();
+		}
+		puts("LEFT: points");
+		for(auto it = left_points.begin(); it < left_points.end(); it++){
+			it->print_node();
+		}
+
+		if(left_points.size() == 0){
+			// We have nothing to recurse on
+		}
+		else if(left_points.size() == 1){
+			answer.insert(answer.begin(),left_points[0]);
+		}
+		else if(left_points.size() == 2){
+			answer.insert(answer.begin(),left_points.begin(),left_points.end());
+		}
+		else{
+			Node left_top, right_top;
+			left_top = get_left_most_point(false,left_points);
+			right_top = get_right_most_point(false,left_points);
+
+			// left_points.erase(std::remove(left_points.begin(),left_points.end(),left_top),point_list.end());
+			// left_points.erase(std::remove(left_points.begin(),left_points.end(),right_top),point_list.end());
+			puts("left recursion entered baya");
+			vector<Node> left_answer = upper_hull(left_points,left_top,right_top);
+			puts("left answer");
+			answer = left_answer;
+		}
+
+		// Add the bridge
+		answer.push_back(the_bridge.getX());
+		answer.push_back(the_bridge.getY());
+
+		if(right_points.size() == 0){
+			// We have nothing to recurse on
+		}
+		else if(right_points.size() == 1){
+			answer.insert(answer.begin(),right_points[0]);
+		}
+		else if(right_points.size() == 2){
+			answer.insert(answer.begin(),right_points.begin(),right_points.end());
+		}
+		else{
+			Node left_top, right_top;
+			left_top = get_left_most_point(false,right_points);
+			right_top = get_right_most_point(false,right_points);
+
+			// right_points.erase(std::remove(right_points.begin(),right_points.end(),left_top),point_list.end());
+			// right_points.erase(std::remove(right_points.begin(),right_points.end(),right_top),point_list.end());
+			puts("right recursion entered baya");
+			vector<Node> right_answer = upper_hull(right_points,left_top,right_top);
+			puts("left answer");
+			answer.insert(answer.end(),right_answer.begin(),right_answer.end());
+		}
+		puts("The answer is");
+		for(auto it=answer.begin();it<answer.end();it++){
+			it->print_node();
+		}
+		return answer;
 	}
-	return point_list;
 }
 
-std::vector<Node> Graph::lower_hull(std::vector<Node> point_list){
+std::vector<Node> Graph::lower_hull(std::vector<Node> point_list,Node p_min, Node p_max){
 	return point_list;
 }
 
@@ -411,15 +728,24 @@ void Graph::kirk_patrick_seidel(){
     std::vector<Node> upper_hull_points,lower_hull_points;
 
     // tuple<pair<double,double>,pair<double,double>,int,int > corner_point_upper = get_corner_points(point_list,true);
-	Node left_top = get_left_most_point(false);
-	Node right_top = get_right_most_point(false);
-	Node left_bottom = get_left_most_point(true);
-	Node right_bottom = get_right_most_point(true);
+	Node left_top = get_left_most_point(false,this->point_list);
+	Node right_top = get_right_most_point(false,this->point_list);
+	puts("top points from left to right");
+	left_top.print_node();
+	right_top.print_node();
+
 
     upper_hull_points.push_back(left_top);
 
-	point_list.erase(std::remove(point_list.begin(),point_list.end(),left_top),point_list.end());
-	point_list.erase(std::remove(point_list.begin(),point_list.end(),right_top),point_list.end());
+	// point_list.erase(std::remove(point_list.begin(),point_list.end(),left_top),point_list.end());
+	// point_list.erase(std::remove(point_list.begin(),point_list.end(),right_top),point_list.end());
+
+	Node left_bottom = get_left_most_point(true,this->point_list);
+	Node right_bottom = get_right_most_point(true,this->point_list);
+
+	puts("bottom points from left to right");
+	left_bottom.print_node();
+	right_bottom.print_node();
 
 	double slope = Edge(left_top,right_top).get_slope();
 	// double slope = (get<0>(corner_point_upper).second - get<1>(corner_point_upper).second ) / ( get<0>(corner_point_upper).first - get<1>(corner_point_upper).first  );
@@ -479,6 +805,6 @@ void Graph::kirk_patrick_seidel(){
     // 	printf("%lf,%lf\n",lower_hull_points[i].first,lower_hull_points[i].second);
     // }
 
-    upper_hull(upper_hull_points);
-
+    vector<Node> upper_solution = upper_hull(upper_hull_points,left_top,right_top);
+	// upper_solution.
 }

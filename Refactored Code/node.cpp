@@ -20,7 +20,9 @@ double Node::getY(){
 	return y;
 }
 
-
+void Node::print_node(){
+	printf("%lf,%lf\n",this->x,this->y);
+}
 
 bool Node::operator <(Node operand2){
 	return this->x < operand2.getPoint().getX() ? true : false ;

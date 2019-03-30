@@ -1,6 +1,9 @@
 #ifndef EDGE
 #define EDGE
 #include "node.h"
+#include <math.h>
+#include <limits>
+#include<stdio.h>
 class Edge{
 	private:
 		Node point1,point2;
@@ -15,6 +18,7 @@ class Edge{
 		// IF YOU HAVE BETTER IDEAS PLEASE CHANGE THIS (DONE FOR CONSISTENCY IN MED_OF_MED).
 		Node getX();
 		Node getY();
+		void print_edge();
 		bool operator <(Edge operand2);
 		bool operator >(Edge operand2);
 		bool operator <=(Edge operand2);

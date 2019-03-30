@@ -10,3 +10,4 @@ graph.cpp -> node.cpp
 
 data.cpp -> node.cpp
 
+g++ main.cpp graph.cpp edge.cpp data.cpp node.cpp

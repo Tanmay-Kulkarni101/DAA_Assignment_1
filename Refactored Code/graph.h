@@ -32,9 +32,9 @@ public:
 
     double polar_angler(Node source, Node target);
 
-	Node get_left_most_point(bool flag_lower);
+	Node get_left_most_point(bool flag_lower,vector<Node> point_list);
 
-	Node get_right_most_point(bool flag_lower);
+	Node get_right_most_point(bool flag_lower,vector<Node> point_list);
 
 	void graham_scan();
 
@@ -42,9 +42,8 @@ public:
 
 	Edge upper_bridge(std::vector<Node> point_list);
 	Edge lower_bridge(std::vector<Node> point_list);
-	std::vector<Node> upper_hull(std::vector<Node> point_list);
-	std::vector<Node> lower_hull(std::vector<Node> point_list);
-
+	std::vector<Node> upper_hull(std::vector<Node> point_list,Node p_min, Node p_max);
+	std::vector<Node> lower_hull(std::vector<Node> point_list,Node p_min, Node p_max);
     void kirk_patrick_seidel();
 };
 

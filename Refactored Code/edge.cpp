@@ -1,9 +1,22 @@
 #include "edge.h"
-#include <math.h>
+
 Edge::Edge(Node point1, Node point2){
     this->point1 = point1;
     this->point2 = point2;
-    this->slope = (point2.getY()-point1.getY())/(point2.getX()-point1.getX());
+
+    if(point1 > point2){
+        Node temp = point1;
+        point1 = point2;
+        point2 = temp;  
+    }
+    if(point2.getX() != point1.getX())
+        this->slope = (point2.getY()-point1.getY())/(point2.getX()-point1.getX());
+    else if(point2.getY() > point1.getY())
+        this->slope = std::numeric_limits<double>::infinity();
+    else if(point2.getY() < point1.getY())
+        this->slope = -std::numeric_limits<double>::infinity();
+    else if(point2.getY() == point1.getY()) // a point
+        this->slope = 0;
     this->angle = atan(slope);
     Node p1 = point1.getPoint();
     Node p2 = point2.getPoint();
@@ -27,6 +40,10 @@ Node Edge::getX(){
 }
 Node Edge::getY(){
     return this->point2;
+}
+
+void Edge::print_edge(){
+    printf("(%lf , %lf) : (%lf , %lf)\n",this->getX().getX(),this->getX().getY(),this->getY().getX(),this->getY().getY());
 }
 
 bool Edge::operator <(Edge operand2){
