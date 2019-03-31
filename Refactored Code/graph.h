@@ -11,6 +11,7 @@ The order of the includes is important, look at the dependencies file before mak
 #include <vector>
 #include <cstdlib>
 #include <algorithm>
+#include <fstream>
 class Graph{
 private:
 	std::vector<Node> convex_hull;

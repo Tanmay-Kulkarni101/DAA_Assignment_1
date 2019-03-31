@@ -96,9 +96,14 @@ void Graph::displayConvexHull(){
         printf("Convex hull is empty\n");
         return;
     }
+    fstream file_handle;
+    file_handle.open("output.txt",std::ios::out);
 	for(auto it=convex_hull.begin();it<convex_hull.end();it++){
 		std::cout<<it->getPoint().getX()<<","<<it->getPoint().getY()<<std::endl;
+		file_handle<<it->getPoint().getX()<<","<<it->getPoint().getY()<<std::endl;
 	}
+		file_handle<<convex_hull[0].getX()<<","<<convex_hull[0].getY()<<std::endl;
+		file_handle.close();
 }
 
 bool Graph::compare_pairs(pair<Node,double> p1, pair<Node,double> p2){
@@ -876,4 +881,6 @@ void Graph::kirk_patrick_seidel(){
 	for(auto it = solution.begin();it<solution.end();it++){
 		it->print_node();
 	}
+
+	convex_hull = solution;
 }
