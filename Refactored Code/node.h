@@ -13,6 +13,7 @@ class Node{
 	double getX();
 	double getY();
 	void print_node();
+	bool is_equal (Node node2);
 	bool operator <(Node operand2);
 	bool operator >(Node operand2);
 	bool operator <=(Node operand2);

@@ -23,7 +23,14 @@ double Node::getY(){
 void Node::print_node(){
 	printf("%lf,%lf\n",this->x,this->y);
 }
-
+bool Node::is_equal(Node node2){
+	if(this->x == node2.getX() && this->y == node2.getY()){
+		return true;
+	}
+	else{
+		return false;
+	}
+}
 bool Node::operator <(Node operand2){
 	return this->x < operand2.getPoint().getX() ? true : false ;
 }
