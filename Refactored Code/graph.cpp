@@ -101,6 +101,10 @@ void Graph::displayConvexHull(){
 	}
 }
 
+bool Graph::compare_pairs(pair<Node,double> p1, pair<Node,double> p2){
+	return (p1.second < p2.second);
+}
+
 void Graph::graham_scan(){
 	// Code for graham scan, takes point_list as input and the output is in convex_hull
 	Node corner_point = get_left_most_point(false,this->point_list); // Taking the highest point on the left side
@@ -127,7 +131,7 @@ void Graph::graham_scan(){
     //     }
     // }
 
-    std::sort(polar_angles.begin(),polar_angles.end());
+    std::sort(polar_angles.begin(),polar_angles.end(),compare_pairs);
 
     for(int i=0;i<polar_angles.size();i++){
         std::cout<<polar_angles[i].first.getX()<<" "<<polar_angles[i].first.getY()<<" -> "<<polar_angles[i].second<<std::endl;
