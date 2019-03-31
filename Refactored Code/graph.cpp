@@ -93,7 +93,7 @@ double Graph::polar_angler(Node source, Node target){
 void Graph::displayConvexHull(){
 	std::cout << "The points present within the convex hull are" << '\n';
     if(convex_hull.size() == 0){
-        //printf("Convex hull is empty\n");
+        printf("Convex hull is empty\n");
         return;
     }
 	for(auto it=convex_hull.begin();it<convex_hull.end();it++){
@@ -102,10 +102,10 @@ void Graph::displayConvexHull(){
 }
 
 void Graph::graham_scan(){
+	// Code for graham scan, takes point_list as input and the output is in convex_hull
 	Node corner_point = get_left_most_point(false,this->point_list); // Taking the highest point on the left side
 	std::vector<Node> temp_point_list = point_list; // This does a deep copy and replaces the objects in the container
 
-	std::cout<<"The corner point is "<<corner_point.getX()<<" "<<corner_point.getY()<<'\n';
     std::vector<std::pair<Node,double>> polar_angles;
     polar_angles.push_back(std::make_pair(corner_point,-10));
 
@@ -114,19 +114,20 @@ void Graph::graham_scan(){
         if(point_list[i] != corner_point)
 
             polar_angles.push_back(std::make_pair(point_list[i],polar_angler(corner_point,point_list[i])));
-        //printf("%lf\n",polar_angles[i].second);
     }
 
     // STL sorting wrt to polar angles
-    for(int i=0;i<point_list.size()-1;i++){
-        for(int j=i+1;j<point_list.size();j++){
-            if(polar_angles[i].second > polar_angles[j].second){
-                std::pair<Node,double> temp = polar_angles[i];
-                polar_angles[i] = polar_angles[j];
-                polar_angles[j] = temp;
-            }
-        }
-    }
+    // for(int i=0;i<point_list.size()-1;i++){
+    //     for(int j=i+1;j<point_list.size();j++){
+    //         if(polar_angles[i].second > polar_angles[j].second){
+    //             std::pair<Node,double> temp = polar_angles[i];
+    //             polar_angles[i] = polar_angles[j];
+    //             polar_angles[j] = temp;
+    //         }
+    //     }
+    // }
+
+    std::sort(polar_angles.begin(),polar_angles.end());
 
     for(int i=0;i<polar_angles.size();i++){
         std::cout<<polar_angles[i].first.getX()<<" "<<polar_angles[i].first.getY()<<" -> "<<polar_angles[i].second<<std::endl;
@@ -143,17 +144,16 @@ void Graph::graham_scan(){
         }
         st.push_back(polar_angles[i]);
     }
-    // std::vector<pair<double,double>> solution;
+
     for(int i=0;i<st.size();i++){
         std::cout<<st[i].first.getX()<<" "<<st[i].first.getY()<<" -> "<<st[i].second<<std::endl;
         convex_hull.push_back(st[i].first);
     }
 
-    // return solution;
-
 }
 
 void Graph::jarvis_march(){
+
     Node corner_point = get_left_most_point(false,this->point_list);
     std::cout<<"The corner point is "<<corner_point.getX()<<" "<<corner_point.getY()<<std::endl;
     //remove the corner point
@@ -303,7 +303,7 @@ Edge Graph::upper_bridge(std::vector<Node> point_list){
 				intercept=temp_intercept;
                 node_min = node_max = point_list[i];
 			}
-            else if(abs(temp_intercept - intercept) < 0.000001){
+            else if(abs(temp_intercept - intercept) < 0.000001){ // Gareeb equality test
                 if(node_min>point_list[i]){
                     node_min = point_list[i];
                 }
