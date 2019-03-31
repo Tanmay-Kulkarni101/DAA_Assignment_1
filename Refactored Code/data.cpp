@@ -12,7 +12,7 @@ int Data::generateTestCases(int numberOfTestCases,double lower_bound,double uppe
 	std::fstream file;
 	file.open(filePath,std::ios::out);
 	std::default_random_engine generator;
-	std::uniform_real_distribution<double> distribution(lower_bound,upper_bound);
+	std::normal_distribution<double> distribution(lower_bound,upper_bound);
 	if(file.is_open()){
 		std::cout<<"Opened the file successfully\n";
 		for(int i=0;i<numberOfTestCases;i++){

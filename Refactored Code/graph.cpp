@@ -97,7 +97,7 @@ void Graph::displayConvexHull(){
         return;
     }
 	for(auto it=convex_hull.begin();it<convex_hull.end();it++){
-		std::cout<<"X:"<<it->getPoint().getX()<<" Y:"<<it->getPoint().getY()<<std::endl;
+		std::cout<<it->getPoint().getX()<<","<<it->getPoint().getY()<<std::endl;
 	}
 }
 
@@ -199,7 +199,7 @@ void Graph::jarvis_march(){
             std::cout<<convex_hull[i].getX()<<" "<<convex_hull[i].getY()<<std::endl;
         }
         char c;
-        std::cin >> c;
+        // std::cin >> c;
         std::cout<<"***********************************\n";
     }
     std::cout<<"Das solution ist\n";
@@ -844,11 +844,11 @@ void Graph::kirk_patrick_seidel(){
     // 	//printf("%lf,%lf\n",lower_hull_points[i].first,lower_hull_points[i].second);
     // }
 
- //    vector<Node> upper_solution = upper_hull(upper_hull_points,left_top,right_top);
-	// //printf("**********************************************************************************************************\n");
-	// //puts("upper hull is:");
-	// for(auto it = upper_solution.begin(); it < upper_solution.end(); it++)
-	// 	it->print_node();
+    vector<Node> upper_solution = upper_hull(upper_hull_points,left_top,right_top);
+	//printf("**********************************************************************************************************\n");
+	//puts("upper hull is:");
+	for(auto it = upper_solution.begin(); it < upper_solution.end(); it++)
+		it->print_node();
 	
 	
 	vector<Node> lower_solution = lower_hull(lower_hull_points,left_bottom,right_bottom);
@@ -857,19 +857,19 @@ void Graph::kirk_patrick_seidel(){
 	for(auto it = lower_solution.begin(); it < lower_solution.end(); it++)
 		it->print_node();
 
-	// if(upper_solution[0].is_equal(lower_solution[0]) ){
-	// 	lower_solution.erase(lower_solution.begin());
-	// }
-	// if(upper_solution[upper_solution.size()-1].is_equal(lower_solution[lower_solution.size()-1]) ){
-	// 	lower_solution.pop_back();
-	// }
+	if(upper_solution[0].is_equal(lower_solution[0]) ){
+		lower_solution.erase(lower_solution.begin());
+	}
+	if(upper_solution[upper_solution.size()-1].is_equal(lower_solution[lower_solution.size()-1]) ){
+		lower_solution.pop_back();
+	}
 
-	// vector<Node> solution;
-	// solution.insert(solution.end(),upper_solution.begin(),upper_solution.end());
-	// solution.insert(solution.end(),lower_solution.rbegin(),lower_solution.rend());
+	vector<Node> solution;
+	solution.insert(solution.end(),upper_solution.begin(),upper_solution.end());
+	solution.insert(solution.end(),lower_solution.rbegin(),lower_solution.rend());
 
-	// //printf("\n\n\n\n\nThe final solution is \n\n");
-	// for(auto it = solution.begin();it<solution.end();it++){
-	// 	it->print_node();
-	// }
+	printf("\n\n\n\n\nThe final solution is \n\n");
+	for(auto it = solution.begin();it<solution.end();it++){
+		it->print_node();
+	}
 }
