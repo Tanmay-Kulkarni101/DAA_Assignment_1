@@ -531,7 +531,7 @@ Edge Graph::lower_bridge(std::vector<Node> point_list){
 			it->print_node();
 		}
 		puts("About to recurse");
-		return upper_bridge(candidates);
+		return lower_bridge(candidates);
 }
 
 std::vector<Node> Graph::upper_hull(std::vector<Node> point_list,Node p_min, Node p_max){
@@ -729,6 +729,9 @@ void Graph::kirk_patrick_seidel(){
 
 
     upper_hull_points.push_back(right_top);
+
+	point_list.push_back(left_top);
+	point_list.push_back(right_top);
 
 	Node left_bottom = get_left_most_point(true,this->point_list);
 	Node right_bottom = get_right_most_point(true,this->point_list);
