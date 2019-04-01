@@ -1,1 +1,7 @@
-.vscode/*
+./Vizard_Vizion/.vscode/*
+./Vizard_Vizion/data/*
+./Vizard_Vizion/data/visualizations/*
+./Vizard_Vizion/a.out
+./Vizard_Vizion/*.mp4
+./"Refactored Code"/a.out
+./"Refactored Code"/data/*

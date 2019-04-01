@@ -28,7 +28,7 @@ def animate_jm_gs(i):
 		hull_points = np.delete(hull_points,index,axis=0)
 	else:
 		hull_points = np.vstack((hull_points,np.reshape(candidates[i,:],(1,2))))
-	print(i)
+	#print(i)
 	ax.scatter(graph_points[:,0],graph_points[:,1])
 	ax.scatter(hull_points[:,0],hull_points[:,1],color='black')
 	ax.plot(hull_points[:,0],hull_points[:,1],color='red')
@@ -72,7 +72,6 @@ def main():
 			graph_points.append([x,y])
 
 	file = int(input("Enter file to run:\n1: Graham Scan\n2: Jarvis March\n3: KPS\n"))
-
 	if file == 1:
 		with open('./visualizations/grahm_scan.txt','r') as file_handle:
 			for line in file_handle:

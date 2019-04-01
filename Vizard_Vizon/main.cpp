@@ -3,14 +3,16 @@
 #include <chrono>
 const long long number_of_test_cases = 3;
 const double mean = 0;
-const double variance = 100;
+const double variance = 10;
 int main(){
-	
+
 	Data data; // calls default cnstr
-	
-	data.generateTestCases(number_of_test_cases,mean,variance);
-	
-	for (int i=0;i<3;i++){	
+	cout<<"Enter the number of points on the plane\n";
+	int n;
+	cin >> n;
+	data.generateTestCases(n,mean,variance);
+
+	for (int i=0;i<3;i++){
 
 		Graph graph = Graph(data);
 		if(i == 0){
@@ -40,6 +42,6 @@ int main(){
 			graph.displayConvexHull();
 		}
 	}
-		
+
 	return 0;
 }
