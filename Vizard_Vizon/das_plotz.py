@@ -9,13 +9,17 @@ package = []
 bridges = []
 fig,ax = plt.subplots()
 plot, = ax.plot([],[],color='blue',animated=True)
+title = ""
+
 
 def init():
 	ax.scatter(graph_points[:,0],graph_points[:,1],color='red',zorder=1)
+	ax.set_title(title)
 	return plot,
 
 def animate_jm_gs(i):
 	ax.cla()
+	ax.set_title(title)
 	global hull_points		
 	if i == 0:
 		hull_points = np.reshape(np.array(candidates[i,:]),(1,2))
@@ -33,6 +37,7 @@ def animate_jm_gs(i):
 def animate_kps(i):
 	print(i)
 	ax.cla()
+	ax.set_title(title)
 	ax.scatter(graph_points[:,0],graph_points[:,1],color='blue',zorder=1)
 	(edges,left,right) = package[i]
 	
@@ -57,6 +62,7 @@ def main():
 	global graph_points
 	global package
 	global bridges
+	global title
 	with open("data/DataPoints.txt","r") as file_handle:
 		for line in file_handle:
 			line = line.strip()
@@ -145,12 +151,14 @@ def main():
 		Writer = animation.writers['ffmpeg']
 		writer = Writer(fps=30, metadata=dict(artist='Me'), bitrate=1800)
 		if file == 1:
+			title = "Graham Scan"
 			ani.save('gs.mp4',writer = writer)
 		else:
+			title = "Jarvis march"
 			ani.save('jm.mp4',writer = writer)
-		plot.set_data(candidates[:,0],candidates[:,1])
 		plt.show()
 	elif file == 3:
+		title = "Kirkpatrick Seidel"
 		for it in range(len(package)):
 			print(bridges[it])
 		ani = animation.FuncAnimation(fig, animate_kps, init_func=init, frames=np.arange(0,len(package),1),interval=1000)
