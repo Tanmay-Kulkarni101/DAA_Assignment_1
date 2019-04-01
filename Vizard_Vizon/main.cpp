@@ -1,7 +1,7 @@
 #include "data.h"
 #include "graph.h"
 #include <chrono>
-const long long number_of_test_cases = 30;
+const long long number_of_test_cases = 3;
 const double mean = 0;
 const double variance = 100;
 int main(){
@@ -13,7 +13,7 @@ int main(){
 	for (int i=0;i<3;i++){	
 
 		Graph graph = Graph(data);
-		if(i == 1){
+		if(i == 0){
 			puts("KPS");
 			auto start = std::chrono::system_clock::now();
 			graph.kirk_patrick_seidel();

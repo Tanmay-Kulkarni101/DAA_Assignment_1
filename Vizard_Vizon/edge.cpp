@@ -72,7 +72,7 @@ void Edge::print_edge(){
 }
 std::string Edge::to_string(){
     char output[100];
-	sprintf(output,"%lf , %lf : %lf , %lf\n",this->getX().getX(),this->getX().getY(),this->getY().getX(),this->getY().getY());
+	sprintf(output,"%lf , %lf ; %lf , %lf\n",this->getX().getX(),this->getX().getY(),this->getY().getX(),this->getY().getY());
 	std::string temp = output;
 	return temp;
 }

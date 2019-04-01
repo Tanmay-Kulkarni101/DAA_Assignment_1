@@ -125,7 +125,6 @@ void Graph::graham_scan(){
 	
 	Node corner_point = get_left_most_point(false,this->point_list); // Taking the highest point on the left side
 	std::vector<Node> temp_point_list = point_list; // This does a deep copy and replaces the objects in the container
-	file_handle << corner_point.to_string();
 
     std::vector<std::pair<Node,double>> polar_angles;
     polar_angles.push_back(std::make_pair(corner_point,-10));
@@ -445,7 +444,7 @@ std::vector<Node> Graph::upper_hull(std::vector<Node> point_list,Node p_min, Nod
 		file_handle << "b:" << the_bridge.to_string();
 
 		if(the_bridge.getX().is_equal(p_min) && the_bridge.getY().is_equal(p_max)){
-			
+			file_handle << "done\n";
 			answer.push_back(p_min);
 			answer.push_back(p_max);
 			return answer;
@@ -527,6 +526,8 @@ std::vector<Node> Graph::upper_hull(std::vector<Node> point_list,Node p_min, Nod
 				}
 			}
 		}
+
+		file_handle << "done\n";
 		
 		left_points.insert(left_points.begin(),p_min);
 		left_points.push_back(the_bridge.getX());
@@ -535,6 +536,7 @@ std::vector<Node> Graph::upper_hull(std::vector<Node> point_list,Node p_min, Nod
 		right_points.push_back(p_max);
 		right_points.insert(right_points.begin(),the_bridge.getY());
 		
+
 		vector<Node> right_answer = upper_hull(right_points,the_bridge.getY(),p_max,file_handle);
 		
 		answer.insert(answer.end(),left_answer.begin(),left_answer.end());
@@ -553,14 +555,23 @@ std::vector<Node> Graph::lower_hull(std::vector<Node> point_list,Node p_min, Nod
 		std::vector<Node> left_points,right_points;
 
 		Edge the_bridge = lower_bridge(point_list);
+
+		file_handle << "b:" << the_bridge.to_string();
+
 		if(the_bridge.getX().is_equal(p_min) && the_bridge.getY().is_equal(p_max)){
 			answer.push_back(p_min);
 			answer.push_back(p_max);
+			file_handle << "done\n";
 			return answer;
 		}
 		Edge trapezoid_top = Edge(p_min,p_max);
 		Edge trapezoid_left = Edge(p_min,the_bridge.getX());
 		Edge trapezoid_right = Edge(the_bridge.getY(),p_max);
+
+		file_handle << "e:" << trapezoid_top.to_string();
+		file_handle << "e:" << trapezoid_left.to_string();
+		file_handle << "e:" << trapezoid_right.to_string();
+
 		if(!the_bridge.getX().is_equal(p_min) && !the_bridge.getY().is_equal(p_max)){
 			for(auto it = point_list.begin(); it < point_list.end(); it++){
 				
@@ -592,11 +603,19 @@ std::vector<Node> Graph::lower_hull(std::vector<Node> point_list,Node p_min, Nod
 			if(p_min.is_equal(the_bridge.getX())){
 				triangle_left = Edge(p_min,the_bridge.getY());
 				triangle_right = Edge(p_max,the_bridge.getY());
+
+				file_handle << "e:" << triangle_right.to_string();
+				file_handle << "e:" << triangle_top.to_string();
 			}
 			else{
 				triangle_left = Edge(p_min,the_bridge.getX());
 				triangle_right = Edge(p_max,the_bridge.getX());
 			}
+
+			file_handle << "e:" << triangle_left.to_string();
+			file_handle << "e:" << triangle_top.to_string();
+
+
 			for(auto it = point_list.begin(); it < point_list.end(); it++){
 				
 				// we ignore internal points 
@@ -617,6 +636,7 @@ std::vector<Node> Graph::lower_hull(std::vector<Node> point_list,Node p_min, Nod
 			}
 		}
 
+		file_handle << "done\n";
 
 		left_points.insert(left_points.begin(),p_min);
 		left_points.push_back(the_bridge.getX());
@@ -692,7 +712,7 @@ void Graph::kirk_patrick_seidel(){
     vector<Node> upper_solution = upper_hull(upper_hull_points,left_top,right_top,file_handle);
 	
 	
-	// vector<Node> lower_solution = lower_hull(lower_hull_points,left_bottom,right_bottom,file_handle);
+	vector<Node> lower_solution = lower_hull(lower_hull_points,left_bottom,right_bottom,file_handle);
 
 	// if(upper_solution[0].is_equal(lower_solution[0]) ){
 	// 	lower_solution.erase(lower_solution.begin());
