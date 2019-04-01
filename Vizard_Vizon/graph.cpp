@@ -162,7 +162,7 @@ void Graph::graham_scan(){
     for(int i=0;i<st.size();i++){ // The points left in the stack will be the solution
         convex_hull.push_back(st[i].first);
     }
-
+	file_handle.close();
 }
 
 void Graph::jarvis_march(){
@@ -199,8 +199,7 @@ void Graph::jarvis_march(){
                 file_handle<<candidate.to_string();
 				candidate = point_list[i]; // update the candidate
                 location = i;
-				// file_handle<<candidate.to_string();
-            }
+			}
             else{
 				file_handle << point_list[i].to_string();
 				// Otherwise it is in counter-clockwise order, so the candidate is correct
@@ -223,6 +222,7 @@ void Graph::jarvis_march(){
 		convex_hull.clear();
 		return ;
 	}
+	file_handle.close();
 }
 
 Edge Graph::upper_bridge(std::vector<Node> point_list){
@@ -430,8 +430,8 @@ Edge Graph::lower_bridge(std::vector<Node> point_list){
 	return lower_bridge(candidates);
 }
 
-std::vector<Node> Graph::upper_hull(std::vector<Node> point_list,Node p_min, Node p_max){
-
+std::vector<Node> Graph::upper_hull(std::vector<Node> point_list,Node p_min, Node p_max,fstream &file_handle){
+	
 	std::vector<Node> answer;
 
 	if (p_min.getX() == p_max.getX() && p_min.getY() == p_min.getY()){
@@ -441,6 +441,9 @@ std::vector<Node> Graph::upper_hull(std::vector<Node> point_list,Node p_min, Nod
 		std::vector<Node> left_points,right_points;
 
 		Edge the_bridge = upper_bridge(point_list);
+
+		file_handle << "b:" << the_bridge.to_string();
+
 		if(the_bridge.getX().is_equal(p_min) && the_bridge.getY().is_equal(p_max)){
 			
 			answer.push_back(p_min);
@@ -453,6 +456,10 @@ std::vector<Node> Graph::upper_hull(std::vector<Node> point_list,Node p_min, Nod
 			Edge trapezoid_left = Edge(p_min,the_bridge.getX());
 			Edge trapezoid_right = Edge(the_bridge.getY(),p_max);
 			
+			file_handle << "e:" << trapezoid_bottom.to_string();
+			file_handle << "e:" << trapezoid_left.to_string();
+			file_handle << "e:" << trapezoid_right.to_string();
+
 			for(auto it = point_list.begin(); it < point_list.end(); it++){
 				// we ignore internal points
 
@@ -463,9 +470,11 @@ std::vector<Node> Graph::upper_hull(std::vector<Node> point_list,Node p_min, Nod
 						continue;		
 				}
 				else if(get_orientation(trapezoid_left.getX(),trapezoid_left.getY(),*it)){
+					file_handle << "l:" << it->to_string();
 					left_points.push_back(*it);
 				}
 				else if(get_orientation(trapezoid_right.getX(),trapezoid_right.getY(),*it)){
+					file_handle << "r:" << it->to_string();
 					right_points.push_back(*it);
 				}
 				else{
@@ -479,12 +488,21 @@ std::vector<Node> Graph::upper_hull(std::vector<Node> point_list,Node p_min, Nod
 			Edge triangle_left ;
 			Edge triangle_right ;
 			if(p_min.is_equal(the_bridge.getX())){
+
 				triangle_left = Edge(p_min,the_bridge.getY());
 				triangle_right = Edge(the_bridge.getY(),p_max);
+				
+				file_handle << "e:" << triangle_right.to_string();
+				file_handle << "e:" << triangle_bottom.to_string();
+
 			}
 			else{
+
 				triangle_left = Edge(p_min,the_bridge.getX());
 				triangle_right = Edge(the_bridge.getX(),p_max);
+			
+				file_handle << "e:" << triangle_left.to_string();
+				file_handle << "e:" << triangle_bottom.to_string();
 			}
 			
 			
@@ -497,11 +515,11 @@ std::vector<Node> Graph::upper_hull(std::vector<Node> point_list,Node p_min, Nod
 					continue;
 				}
 				else if(get_orientation(triangle_left.getX(),triangle_left.getY(),*it)){
-					
+					file_handle << "l:" << it->to_string();
 					left_points.push_back(*it);
 				}
 				else if(get_orientation(triangle_right.getX(),triangle_right.getY(),*it) ){
-					
+					file_handle << "r:" << it->to_string();
 					right_points.push_back(*it);
 				}
 				else{
@@ -512,12 +530,12 @@ std::vector<Node> Graph::upper_hull(std::vector<Node> point_list,Node p_min, Nod
 		
 		left_points.insert(left_points.begin(),p_min);
 		left_points.push_back(the_bridge.getX());
-		vector<Node> left_answer = upper_hull(left_points,p_min,the_bridge.getX());
+		vector<Node> left_answer = upper_hull(left_points,p_min,the_bridge.getX(),file_handle);
 		
 		right_points.push_back(p_max);
 		right_points.insert(right_points.begin(),the_bridge.getY());
 		
-		vector<Node> right_answer = upper_hull(right_points,the_bridge.getY(),p_max);
+		vector<Node> right_answer = upper_hull(right_points,the_bridge.getY(),p_max,file_handle);
 		
 		answer.insert(answer.end(),left_answer.begin(),left_answer.end());
 		answer.insert(answer.end(),right_answer.begin(),right_answer.end());
@@ -525,7 +543,7 @@ std::vector<Node> Graph::upper_hull(std::vector<Node> point_list,Node p_min, Nod
 	return answer;
 }
 
-std::vector<Node> Graph::lower_hull(std::vector<Node> point_list,Node p_min, Node p_max){
+std::vector<Node> Graph::lower_hull(std::vector<Node> point_list,Node p_min, Node p_max,fstream &file_handle){
 	std::vector<Node> answer;
 
 	if (p_min.getX() == p_max.getX() && p_min.getY() == p_min.getY()){
@@ -602,10 +620,10 @@ std::vector<Node> Graph::lower_hull(std::vector<Node> point_list,Node p_min, Nod
 
 		left_points.insert(left_points.begin(),p_min);
 		left_points.push_back(the_bridge.getX());
-		vector<Node> left_answer = lower_hull(left_points,p_min,the_bridge.getX());
+		vector<Node> left_answer = lower_hull(left_points,p_min,the_bridge.getX(),file_handle);
 		right_points.push_back(p_max);
 		right_points.insert(right_points.begin(),the_bridge.getY());
-		vector<Node> right_answer = lower_hull(right_points,the_bridge.getY(),p_max);
+		vector<Node> right_answer = lower_hull(right_points,the_bridge.getY(),p_max,file_handle);
 		
 		answer.insert(answer.end(),left_answer.begin(),left_answer.end());
 		answer.insert(answer.end(),right_answer.begin(),right_answer.end());
@@ -614,6 +632,9 @@ std::vector<Node> Graph::lower_hull(std::vector<Node> point_list,Node p_min, Nod
 }
 
 void Graph::kirk_patrick_seidel(){
+
+	fstream file_handle;
+	file_handle.open(KPS_OUTPUT,std::ios::out);
 
 	if (point_list.size() <= 2){
 		puts("There is no solution");
@@ -668,26 +689,27 @@ void Graph::kirk_patrick_seidel(){
 
     lower_hull_points.push_back(right_bottom);
 
-    vector<Node> upper_solution = upper_hull(upper_hull_points,left_top,right_top);
+    vector<Node> upper_solution = upper_hull(upper_hull_points,left_top,right_top,file_handle);
 	
 	
-	vector<Node> lower_solution = lower_hull(lower_hull_points,left_bottom,right_bottom);
+	// vector<Node> lower_solution = lower_hull(lower_hull_points,left_bottom,right_bottom,file_handle);
 
-	if(upper_solution[0].is_equal(lower_solution[0]) ){
-		lower_solution.erase(lower_solution.begin());
-	}
-	if(upper_solution[upper_solution.size()-1].is_equal(lower_solution[lower_solution.size()-1]) ){
-		lower_solution.pop_back();
-	}
+	// if(upper_solution[0].is_equal(lower_solution[0]) ){
+	// 	lower_solution.erase(lower_solution.begin());
+	// }
+	// if(upper_solution[upper_solution.size()-1].is_equal(lower_solution[lower_solution.size()-1]) ){
+	// 	lower_solution.pop_back();
+	// }
 
-	vector<Node> solution;
-	solution.insert(solution.end(),upper_solution.begin(),upper_solution.end());
-	solution.insert(solution.end(),lower_solution.rbegin(),lower_solution.rend());
+	// vector<Node> solution;
+	// solution.insert(solution.end(),upper_solution.begin(),upper_solution.end());
+	// solution.insert(solution.end(),lower_solution.rbegin(),lower_solution.rend());
 
-	if(solution.size() > 2){
-		convex_hull = solution;
-	}
-	else{
-		puts("No solution exists for this ");
-	}
+	// if(solution.size() > 2){
+	// 	convex_hull = solution;
+	// }
+	// else{
+	// 	puts("No solution exists for this ");
+	// }
+	file_handle.close();
 }

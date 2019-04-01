@@ -13,7 +13,7 @@ int main(){
 	for (int i=0;i<3;i++){	
 
 		Graph graph = Graph(data);
-		if(i == 10){
+		if(i == 1){
 			puts("KPS");
 			auto start = std::chrono::system_clock::now();
 			graph.kirk_patrick_seidel();
