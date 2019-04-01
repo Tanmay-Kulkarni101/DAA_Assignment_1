@@ -2,13 +2,13 @@
 #include "graph.h"
 int main(){
 	Data data; // calls default cnstr
-	data.generateTestCases(10000,0,1000);
+	data.generateTestCases(10000,0,10000);
 	Graph graph = Graph(data);
-	graph.displayPointList();
+	// graph.displayPointList();
 
-	graph.kirk_patrick_seidel();
+	// graph.kirk_patrick_seidel();
 	// graph.graham_scan();
-	// graph.jarvis_march();
+	graph.jarvis_march();
 
-    graph.displayConvexHull();
+    // graph.displayConvexHull();
 }

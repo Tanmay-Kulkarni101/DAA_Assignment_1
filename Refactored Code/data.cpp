@@ -56,7 +56,7 @@ std::vector<Node> Data::get_data_from_file(){
 		std::string line;
 		while(std::getline(file,line)){
 			std::vector<std::string> temp = split(line.c_str(),delim.at(0));
-			std::cout<<temp[0]<<","<<temp[1]<<"\n";
+			// std::cout<<temp[0]<<","<<temp[1]<<"\n";
 			char* term;
 			double x = strtod(temp[0].c_str(),&term);
 			if(*term!=0){
