@@ -149,7 +149,8 @@ void Graph::jarvis_march(){
     Node corner_point = get_left_most_point(false,this->point_list);
     //remove the corner point
     std::vector<Node>::iterator iterTemp = std::remove(point_list.begin(), point_list.end(), corner_point);
-    
+    point_list.erase(iterTemp,point_list.end());
+	
     convex_hull.push_back(corner_point);
     Node candidate = point_list[0], last_point = convex_hull[convex_hull.size()-1];
     //apply the algorithm

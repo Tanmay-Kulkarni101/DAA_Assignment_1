@@ -8,11 +8,12 @@
 const int Data::DATA_LINE_SIZE = 20;
 const std::string Data::DEFAULT_DELIM = " ";
 const std::string Data::DEFAULT_FILE_PATH = "./data/DataPoints.txt";
-int Data::generateTestCases(int numberOfTestCases,double lower_bound,double upper_bound){
+int Data::generateTestCases(long long numberOfTestCases,double lower_bound,double upper_bound){
 	std::fstream file;
 	file.open(filePath,std::ios::out);
 	std::default_random_engine generator;
-	std::uniform_real_distribution<double> distribution(lower_bound,upper_bound);
+	// std::uniform_real_distribution<double> distribution(lower_bound,upper_bound);
+	std::normal_distribution<double> distribution(lower_bound,upper_bound);
 	if(file.is_open()){
 		std::cout<<"Opened the file successfully\n";
 		for(int i=0;i<numberOfTestCases;i++){
@@ -28,6 +29,7 @@ int Data::generateTestCases(int numberOfTestCases,double lower_bound,double uppe
 		std::cout<<"Could not find the file location\n";
 	}
 
+	file.close();
 	return 0;
 }
 std::vector<std::string> Data::split(const char *str, char delim )

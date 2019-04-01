@@ -11,7 +11,7 @@ private:
 	static const int DATA_LINE_SIZE;
 	static const std::string DEFAULT_DELIM;
 	static const std::string DEFAULT_FILE_PATH;
-	int generateTestCases(int,double,double);
+	int generateTestCases(long long,double,double);
 	std::vector<std::string> split(const char *str, char delim );
 	std::vector<Node> get_data_from_file();
 	std::string getDelim();
