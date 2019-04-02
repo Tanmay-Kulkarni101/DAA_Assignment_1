@@ -31,6 +31,13 @@ bool Node::is_equal(Node node2){
 		return false;
 	}
 }
+/**
+ * @brief 
+ * Does a less than comparison based on the x coordinate
+ * @param operand2 
+ * @return true 
+ * @return false 
+ */
 bool Node::operator <(Node operand2){
 	return this->x < operand2.getPoint().getX() ? true : false ;
 }

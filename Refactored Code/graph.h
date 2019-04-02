@@ -12,6 +12,13 @@ The order of the includes is important, look at the dependencies file before mak
 #include <cstdlib>
 #include <algorithm>
 #include <fstream>
+/**
+ * @brief 
+ * This class contains all the properties relating to a group of points 
+ * It has the list of points for which the hull is to be found
+ * It has the hull after running the convex hull algorithms
+ * It has the algorithms to find the convex hull
+ */
 class Graph{
 private:
 	std::vector<Node> convex_hull;

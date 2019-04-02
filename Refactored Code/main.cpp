@@ -1,13 +1,20 @@
 #include "data.h"
 #include "graph.h"
 #include <chrono>
-const long long number_of_test_cases = 1000000ll;
+/**
+ * @brief 
+ * This is the dirver function that runs the whole program
+ */
 const double mean = 0;
 const double variance = 100;
 int main(){
 	
 	Data data; // calls default cnstr
 	
+	long long  number_of_test_cases;
+	cout << "enter number of points\n";
+	cin >> number_of_test_cases;
+
 	data.generateTestCases(number_of_test_cases,mean,variance);
 	Graph graph = Graph(data);
 	

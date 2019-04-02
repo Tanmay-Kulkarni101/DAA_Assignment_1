@@ -1,6 +1,9 @@
 import matplotlib.pyplot as plt
 import numpy as np
 def main():
+	"""
+	
+	"""
 	hull_points = []
 	graph_points = []
 	with open("output.txt","r") as file_handle:
