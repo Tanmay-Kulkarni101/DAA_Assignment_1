@@ -43,10 +43,10 @@ public:
 
 	void jarvis_march();
 
-	Edge upper_bridge(std::vector<Node> point_list);
-	Edge lower_bridge(std::vector<Node> point_list);
-	std::vector<Node> upper_hull(std::vector<Node> point_list,Node p_min, Node p_max);
-	std::vector<Node> lower_hull(std::vector<Node> point_list,Node p_min, Node p_max);
+	Edge upper_bridge(std::vector<Node> &point_list);
+	Edge lower_bridge(std::vector<Node> &point_list);
+	std::vector<Node> upper_hull(std::vector<Node> &point_list,Node p_min, Node p_max);
+	std::vector<Node> lower_hull(std::vector<Node> &point_list,Node p_min, Node p_max);
     void kirk_patrick_seidel();
 };
 

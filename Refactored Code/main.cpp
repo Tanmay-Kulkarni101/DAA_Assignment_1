@@ -1,7 +1,7 @@
 #include "data.h"
 #include "graph.h"
 #include <chrono>
-const long long number_of_test_cases = 1000000;
+const long long number_of_test_cases = 1000000ll;
 const double mean = 0;
 const double variance = 100;
 int main(){

@@ -180,7 +180,7 @@ void Graph::jarvis_march(){
     }
 }
 
-Edge Graph::upper_bridge(std::vector<Node> point_list){
+Edge Graph::upper_bridge(std::vector<Node> &point_list){
 	if(point_list.size() == 2){
 		Edge answer = Edge(point_list[0],point_list[1]);
 		return answer;
@@ -232,7 +232,7 @@ Edge Graph::upper_bridge(std::vector<Node> point_list){
 	for(int i=1;i<point_list.size();i++){
 		double temp_intercept = point_list[i].getY() - slope*point_list[i].getX();
 		
-		if(temp_intercept>intercept){
+		if(!(abs(temp_intercept - intercept) < 0.0000001) && temp_intercept>intercept){
 			intercept=temp_intercept;
 			node_min = node_max = point_list[i];
 		}
@@ -280,7 +280,7 @@ Edge Graph::upper_bridge(std::vector<Node> point_list){
 	return upper_bridge(candidates);
 }
 
-Edge Graph::lower_bridge(std::vector<Node> point_list){
+Edge Graph::lower_bridge(std::vector<Node>& point_list){
 	
 	if(point_list.size() == 2){
 		
@@ -336,7 +336,7 @@ Edge Graph::lower_bridge(std::vector<Node> point_list){
 	for(int i=1;i<point_list.size();i++){
 		double temp_intercept = point_list[i].getY() - slope*point_list[i].getX();
 		
-		if(temp_intercept<intercept){
+		if(!(abs(temp_intercept - intercept) < 0.0000001) && temp_intercept<intercept){
 			intercept=temp_intercept;
 			node_min = node_max = point_list[i];
 		}
@@ -384,7 +384,7 @@ Edge Graph::lower_bridge(std::vector<Node> point_list){
 	return lower_bridge(candidates);
 }
 
-std::vector<Node> Graph::upper_hull(std::vector<Node> point_list,Node p_min, Node p_max){
+std::vector<Node> Graph::upper_hull(std::vector<Node> &point_list,Node p_min, Node p_max){
 
 	std::vector<Node> answer;
 
@@ -479,7 +479,7 @@ std::vector<Node> Graph::upper_hull(std::vector<Node> point_list,Node p_min, Nod
 	return answer;
 }
 
-std::vector<Node> Graph::lower_hull(std::vector<Node> point_list,Node p_min, Node p_max){
+std::vector<Node> Graph::lower_hull(std::vector<Node> &point_list,Node p_min, Node p_max){
 	std::vector<Node> answer;
 
 	if (p_min.getX() == p_max.getX() && p_min.getY() == p_min.getY()){

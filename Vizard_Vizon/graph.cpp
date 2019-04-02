@@ -224,7 +224,7 @@ void Graph::jarvis_march(){
 	file_handle.close();
 }
 
-Edge Graph::upper_bridge(std::vector<Node> point_list){
+Edge Graph::upper_bridge(std::vector<Node> &point_list){
 	// Takes a list of points as the input and gives the upper bridge as the output
 	if(point_list.size() == 2){ // Base case where only two points remain where both necessarily belong to the hull, as the bridge always belongs to the hull
 		Edge answer = Edge(point_list[0],point_list[1]);
@@ -367,7 +367,7 @@ Edge Graph::upper_bridge(std::vector<Node> point_list){
 	return upper_bridge(candidates);
 }
 
-Edge Graph::lower_bridge(std::vector<Node> point_list){
+Edge Graph::lower_bridge(std::vector<Node> &point_list){
 	
 	if(point_list.size() == 2){
 		
@@ -471,7 +471,7 @@ Edge Graph::lower_bridge(std::vector<Node> point_list){
 	return lower_bridge(candidates);
 }
 
-std::vector<Node> Graph::upper_hull(std::vector<Node> point_list,Node p_min, Node p_max,fstream &file_handle){
+std::vector<Node> Graph::upper_hull(std::vector<Node> &point_list,Node p_min, Node p_max,fstream &file_handle){
 	
 	std::vector<Node> answer;
 
@@ -587,7 +587,7 @@ std::vector<Node> Graph::upper_hull(std::vector<Node> point_list,Node p_min, Nod
 	return answer;
 }
 
-std::vector<Node> Graph::lower_hull(std::vector<Node> point_list,Node p_min, Node p_max,fstream &file_handle){
+std::vector<Node> Graph::lower_hull(std::vector<Node> &point_list,Node p_min, Node p_max,fstream &file_handle){
 	std::vector<Node> answer;
 
 	if (p_min.getX() == p_max.getX() && p_min.getY() == p_max.getY()){
