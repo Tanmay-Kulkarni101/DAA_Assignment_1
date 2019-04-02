@@ -44,7 +44,7 @@ const double mean = 0;
 const double variance = 100;
 int main(){
 	
-	Data data; // calls default cnstr
+	Data data; // calls default constructor
 	
 	long long  number_of_test_cases;
 	cout << "enter number of points\n";

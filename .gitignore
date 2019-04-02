@@ -5,5 +5,4 @@ Vizard_Vizion/a.out
 Vizard_Vizion/*.mp4
 "Refactored Code"/a.out
 "Refactored Code"/data/*
-"Refactored Code"/.vscode*
-"Refactored Code"/html/*
+"Refactored Code"/.vscode/*
