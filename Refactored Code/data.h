@@ -3,6 +3,10 @@
 #include <iostream>
 #include <vector>
 #include "node.h"
+/**
+ * @brief 
+ * This class is used to facilitate all the transactions between the dataset in a file and the execution apparatus
+ */
 class Data{
 private:
 	std::string filePath;

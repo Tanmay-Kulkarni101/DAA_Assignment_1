@@ -73,10 +73,9 @@ bool Node::is_equal(Node node2){
 		return false;
 	}
 }
-
 /**
- * @brief overriden comparator for comparing two nodes based on the x coordinate, returns true if the second node is larger
- * 
+ * @brief 
+ * Does a less than comparison based on the x coordinate
  * @param operand2 
  * @return true 
  * @return false 

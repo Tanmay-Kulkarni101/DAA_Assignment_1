@@ -2,6 +2,11 @@
 #define NODE
 #include<utility>
 #include<stdio.h>
+/**
+ * @brief 
+ * This call encompasses all the properties for a node.
+ * It allows us to get the x and y coordinates or print the node for debugging purposes
+ */
 class Node{
 	private:
 	double x;

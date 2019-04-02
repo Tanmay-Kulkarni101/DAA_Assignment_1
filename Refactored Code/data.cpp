@@ -5,15 +5,40 @@
 #include <cstdlib>
 #include  "data.h"
 
+/**
+ * @brief 
+ * default size of a record in the file
+ */
 const int Data::DATA_LINE_SIZE = 20;
+/**
+ * @brief 
+ * the default delimiter to differentiate between entries within the file
+ */
 const std::string Data::DEFAULT_DELIM = " ";
+/**
+ * @brief 
+ * The default file path within the project to store files
+ */
 const std::string Data::DEFAULT_FILE_PATH = "./data/DataPoints.txt";
-int Data::generateTestCases(long long numberOfTestCases,double lower_bound,double upper_bound){
+/**
+ * @brief 
+ * This function takes the number of test cases,the mean of the normal distribution as well as the variance
+ * Alternatively we can use it with a uniform distribution by changing the function call used in the code
+ * @param numberOfTestCases 
+ * It is the number of data points on which the algorithm has to run
+ * @param mean 
+ * It is the mean of the sampling distribution
+ * @param variance 
+ * It is the variance of the sampling distribution
+ * @return int 
+ * Returns 0 on successful execution, can be used for buffer overflows if the input is too large
+ */
+int Data::generateTestCases(long long numberOfTestCases,double mean,double variance){
 	std::fstream file;
 	file.open(filePath,std::ios::out);
 	std::default_random_engine generator;
 	// std::uniform_real_distribution<double> distribution(lower_bound,upper_bound);
-	std::normal_distribution<double> distribution(lower_bound,upper_bound);
+	std::normal_distribution<double> distribution(mean,variance);
 	if(file.is_open()){
 		std::cout<<"Opened the file successfully\n";
 		for(int i=0;i<numberOfTestCases;i++){
@@ -32,6 +57,16 @@ int Data::generateTestCases(long long numberOfTestCases,double lower_bound,doubl
 	file.close();
 	return 0;
 }
+/**
+ * @brief 
+ * This is used to split the character array input based on a delimiter.
+ * @param str 
+ * The input character array
+ * @param delim 
+ * The delimiter that is used to divide the char array into parts
+ * @return std::vector<std::string> 
+ * It returns a vector of the string parts delimited by the delimiter character
+ */
 std::vector<std::string> Data::split(const char *str, char delim )
 {
     std::vector<std::string> result;
@@ -48,6 +83,11 @@ std::vector<std::string> Data::split(const char *str, char delim )
 
     return result;
 }
+/**
+ * @brief 
+ * This function extracts the data stored in a text file and returns a vector of nodes
+ * @return std::vector<Node> 
+ */
 std::vector<Node> Data::get_data_from_file(){
 	std::fstream file;
 	file.open(filePath,std::ios::in);
@@ -83,16 +123,38 @@ std::vector<Node> Data::get_data_from_file(){
 
 	return values;
 }
+/**
+ * @brief 
+ * The delimiter used to separate points
+ * @return std::string 
+ */
 std::string Data::getDelim(){
 	return delim;
 }
+/**
+ * @brief 
+ * The file path used to store the data points for which the convex hull is to be found
+ * @return std::string 
+ */
 std::string Data::getFilePath(){
 	return filePath;
 }
+/**
+ * @brief Construct a new Data:: Data object
+ * Constructor to create a data object that stores data in the location specified by filePath
+ * @param filePath 
+ * The path at which we can find the data points for the convex hull
+ * @param delim 
+ * The delimiter that separates the data points within the file
+ */
 Data::Data(std::string filePath,std::string delim){
 	this->filePath=filePath;
 	this->delim=delim;
 }
+/**
+ * @brief Construct a new Data:: Data object
+ * This is the default constructor that stores the hardcoded values for path and delimiter
+ */
 Data::Data(){
 	this->filePath=DEFAULT_FILE_PATH;
 	this->delim=DEFAULT_DELIM;

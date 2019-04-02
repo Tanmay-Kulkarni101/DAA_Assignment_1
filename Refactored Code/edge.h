@@ -4,6 +4,10 @@
 #include <math.h>
 #include <limits>
 #include<stdio.h>
+/**
+ * @brief 
+ * It defines an edge between two nodes
+ */
 class Edge{
 	private:
 		Node point1,point2;
