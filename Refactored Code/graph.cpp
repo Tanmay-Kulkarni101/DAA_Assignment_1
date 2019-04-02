@@ -1,18 +1,37 @@
 
 #include "graph.h"
 
+/**
+ * @brief Construct a new Graph:: Graph object
+ * 
+ * @param data data object to be passed
+ */
 Graph::Graph(Data data){
 	point_list = data.get_data_from_file();
 }
 
+/**
+ * @brief Returns a vector of Node objects that is the list of points
+ * 
+ * @return std::vector<Node> 
+ */
 std::vector<Node> Graph::getPointList(){
 	return point_list;
 }
 
+/**
+ * @brief Setter takes a reference to a vector of nodes as input and sets the point list as the vector
+ * 
+ * @param &point_list reference to a point
+ */
 void Graph::setPointList(std::vector<Node> &point_list){
 	this->point_list.swap(point_list);
 }
 
+/**
+ * @brief Utility for printing the nodes within the graph
+ * 
+ */
 void Graph::displayPointList(){
 	std::cout << "The points present within the graph are" << '\n';
 	for(auto it=point_list.begin();it<point_list.end();it++){
@@ -20,6 +39,15 @@ void Graph::displayPointList(){
 	}
 }
 
+/**
+ * @brief Checks whether the the points given in the order form a counter-clockwise turn
+ * 
+ * @param p
+ * @param q 
+ * @param r 
+ * @return true They form a counter-clockwise turn
+ * @return false They are either collinear or are clockwise
+ */
 bool Graph::get_orientation(Node p,Node q,Node r){
 	double temp = (q.getX()-p.getX())*(r.getY()-q.getY()) - (q.getY()-p.getY())*(r.getX()-q.getX());
 	if(temp > 0){ // for anti-clockwise
@@ -30,7 +58,14 @@ bool Graph::get_orientation(Node p,Node q,Node r){
 	}
 }
 
-Node Graph::get_left_most_point(bool flag_lower,vector<Node> point_list){// if the flag is false we find the upper most point
+/**
+ * @brief 
+ * 
+ * @param If set, finds the lowermost and leftmost point else finds the highest and leftmost point.
+ * @param point_list The vector of Nodes for which the leftmost point is to be found
+ * @return Node The leftmost point 
+ */
+Node Graph::get_left_most_point(bool flag_lower, std::vector<Node> point_list){// if the flag is false we find the upper most point
 	if(point_list.size()==0){ // Size check
 		std::cout << "The size of the list is zero" << '\n';
 		exit(EXIT_FAILURE);
@@ -58,6 +93,13 @@ Node Graph::get_left_most_point(bool flag_lower,vector<Node> point_list){// if t
 	return answer;
 }
 
+/**
+ * @brief 
+ * 
+ * @param If set, finds the rightmost and rightmost point else finds the highest and rightmost point.
+ * @param point_list The vector of Nodes for which the rightmost point is to be found
+ * @return Node The rightmost point 
+ */
 Node Graph::get_right_most_point(bool flag_lower,vector<Node> point_list){// if the flag is false we find the upper most point
 	if(point_list.size()==0){ // Size check
 		std::cout << "The size of the list is zero" << '\n';
@@ -86,10 +128,21 @@ Node Graph::get_right_most_point(bool flag_lower,vector<Node> point_list){// if 
 	return answer;
 }
 
+/**
+ * @brief Returns the polar angle between the x axis and the source and target point
+ * 
+ * @param source 
+ * @param target 
+ * @return double the angle between the lines
+ */
 double Graph::polar_angler(Node source, Node target){
     return atan((target.getY()-source.getY())/(target.getX()-source.getX()));
 }
 
+/**
+ * @brief Utility to display all the (Node) points within the convex hull
+ * 
+ */
 void Graph::displayConvexHull(){
 	std::cout << "The points present on the convex hull are" << '\n';
     if(convex_hull.size() == 0){
@@ -106,10 +159,22 @@ void Graph::displayConvexHull(){
 		file_handle.close();
 }
 
+/**
+ * @brief Comparator for the sort function used within Graham Scan
+ * 
+ * @param p1 second point
+ * @param p2 first point
+ * @return true p1 is lesser than p2
+ * @return false p2 is lesser thatn p1 
+ */
 bool Graph::compare_pairs(pair<Node,double> p1, pair<Node,double> p2){
 	return (p1.second < p2.second);
 }
 
+/**
+ * @brief Implementation of Graham Scan to find the convex hull. Takes as input the vector of points given in the constructor and populates the convex hull attribute 
+ * 
+ */
 void Graph::graham_scan(){
 	// Code for graham scan, takes point_list as input and the output is in convex_hull
 	Node corner_point = get_left_most_point(false,this->point_list); // Taking the highest point on the left side
@@ -144,6 +209,10 @@ void Graph::graham_scan(){
 
 }
 
+/**
+ * @brief Implementation of Jarvis March to find the convex hull. Takes as input the vector of points given in the constructor and populates the convex hull attribute
+ * 
+ */
 void Graph::jarvis_march(){
 
     Node corner_point = get_left_most_point(false,this->point_list);
@@ -180,6 +249,12 @@ void Graph::jarvis_march(){
     }
 }
 
+/**
+ * @brief 
+ * 
+ * @param point_list 
+ * @return Edge 
+ */
 Edge Graph::upper_bridge(std::vector<Node> &point_list){
 	if(point_list.size() == 2){
 		Edge answer = Edge(point_list[0],point_list[1]);

@@ -6,7 +6,7 @@ const double mean = 0;
 const double variance = 100;
 int main(){
 	
-	Data data; // calls default cnstr
+	Data data; // calls default constructor
 	
 	data.generateTestCases(number_of_test_cases,mean,variance);
 	Graph graph = Graph(data);
