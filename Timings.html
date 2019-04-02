@@ -16,6 +16,7 @@
     <title>Hello, world!</title>
   </head>
   <body class="bg-dark" style="color:#EEEEEE">
+      <br>
     <div class="container-fluid">
         <div class="row justify-content-md-center">
             <div class="col-md-auto">
@@ -28,7 +29,7 @@
             </div>
         </div>
         <div class="row justify-content-md-center">
-            <h3>Performance <i>(in milliseconds)</i></h3>
+            <h3>Performance <i>(in microseconds)</i></h3>
         </div>
         <div class="row justify-content-md-center">
             <div class="col-md-auto">
@@ -38,51 +39,81 @@
                         <tr>
                             <th scope="col">Problem Size\Algorithm</th>
                             <th scope="col">Jarvis March O(n*h)</th>
-                            <th scope="col">Graham Scan O(n^2)</th>
-                            <th scope="col">Kirkpatrick Seidel O(n*lgh)</th>
+                            <th scope="col">Graham Scan O(n*log<sub>2</sub>n)</th>
+                            <th scope="col">Kirkpatrick Seidel O(n*log<sub>2</sub>h)</th>
+                            <th scope="col">Average Number of hull points</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <th scope="row">10</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
+                            <td>15.3</td>
+                            <td>25.6</td>
+                            <td>295.2</td>
+                            <td>5</td>
                         </tr>
                         <tr>
-                            <th scope="row">100</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
+                            <th scope="row">10<sup>2</sup></th>
+                            <td>48.9</td>
+                            <td>51.9</td>
+                            <td>1260.3</td>
+                            <td>9</td>
                         </tr>
                         <tr>
-                            <th scope="row">1000</th>
-                            <td>Larry</td>
-                            <td>the Bird</td>
-                            <td>@twitter</td>
+                            <th scope="row">10<sup>3</sup></th>
+                            <td>419.2</td>
+                            <td>480</td>
+                            <td>11487.4</td>
+                            <td>10</td>
                         </tr>
                         <tr>
-                            <th scope="row">10000</th>
-                            <td>Larry</td>
-                            <td>the Bird</td>
-                            <td>@twitter</td>
+                            <th scope="row">10<sup>4</sup></th>
+                            <td>3883.6</td>
+                            <td>4963.9</td>
+                            <td>192884.6</td>
+                            <td>10</td>
                         </tr>
                         <tr>
-                            <th scope="row">100000</th>
-                            <td>Larry</td>
-                            <td>the Bird</td>
-                            <td>@twitter</td>
+                            <th scope="row">10<sup>5</sup></th>
+                            <td>63777.2</td>
+                            <td>56203.9</td>
+                            <td>11512395.2</td>
+                            <td>17</td>
                         </tr>
                         <tr>
-                            <th scope="row">1000000</th>
-                            <td>Larry</td>
-                            <td>the Bird</td>
-                            <td>@twitter</td>
+                            <th scope="row">10<sup>6</sup></th>
+                            <td>590412.8</td>
+                            <td>635221.6</td>
+                            <td>1001285888.4</td>
+                            <td>17</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
+        <br>
+        <div class="row justify-content-md-center">
+            <h3>Plots</h3>
+        </div>
+        <div class="row justify-content-md-center">
+            <img src="Graham Scan.png" alt="">
+        </div>
+        <hr>
+        <div class="row justify-content-md-center">
+            <img src="Jarvis March.png" alt="">
+        </div>
+        <hr>
+        <div class="row justify-content-md-center">
+            <img src="Kirkpatrick Seidel.png" alt="">
+        </div>
+        <hr>
+        <div class="row justify-content-md-center">
+            <h3>Conclusions</h3>
+        </div>
+        <div class="row justify-content-md-center">
+            <p>Jarvis march performs better on an average, however, the difference between them is not significant, in the sense that they both run in the same order of time.
+                However, Kirkpartik-Sidel does not seem to scale up to that factor due to the fact that the use of vectors is not efficient due to the large number of memory operations. </p>
+            </div>
     </div>
 
   </body>

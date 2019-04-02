@@ -1,0 +1,229 @@
+\hypertarget{classGraph}{}\section{Graph Class Reference}
+\label{classGraph}\index{Graph@{Graph}}
+
+
+This class contains all the properties relating to a group of points It has the list of points for which the hull is to be found It has the hull after running the convex hull algorithms It has the algorithms to find the convex hull.  
+
+
+
+
+{\ttfamily \#include $<$graph.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classGraph_ad2e96f43e60cd916a3bccab231fc7570}{Graph} (\hyperlink{classData}{Data} data)
+\begin{DoxyCompactList}\small\item\em Construct a new \hyperlink{classGraph}{Graph}\+:\+: \hyperlink{classGraph}{Graph} object. \end{DoxyCompactList}\item 
+std\+::vector$<$ \hyperlink{classNode}{Node} $>$ \hyperlink{classGraph_a8231d26a14b98e1b745dc589206288f0}{get\+Point\+List} ()
+\begin{DoxyCompactList}\small\item\em Returns a vector of \hyperlink{classNode}{Node} objects that is the list of points. \end{DoxyCompactList}\item 
+void \hyperlink{classGraph_ac3d8fd4be7db3fd814b68499322b9cba}{set\+Point\+List} (std\+::vector$<$ \hyperlink{classNode}{Node} $>$ \&point\+\_\+list)
+\begin{DoxyCompactList}\small\item\em Setter takes a reference to a vector of nodes as input and sets the point list as the vector. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classGraph_af17d100a4c98374793b04f7eb57532d4}\label{classGraph_af17d100a4c98374793b04f7eb57532d4}} 
+void \hyperlink{classGraph_af17d100a4c98374793b04f7eb57532d4}{display\+Point\+List} ()
+\begin{DoxyCompactList}\small\item\em Utility for printing the nodes within the graph. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classGraph_a76a6670d6c92e56bfc20a3d581a633ff}\label{classGraph_a76a6670d6c92e56bfc20a3d581a633ff}} 
+void \hyperlink{classGraph_a76a6670d6c92e56bfc20a3d581a633ff}{display\+Convex\+Hull} ()
+\begin{DoxyCompactList}\small\item\em Utility to display all the (\hyperlink{classNode}{Node}) points within the convex hull. \end{DoxyCompactList}\item 
+bool \hyperlink{classGraph_a657f8174fb95bd7bfd99556cfb4cbd65}{get\+\_\+orientation} (\hyperlink{classNode}{Node} p, \hyperlink{classNode}{Node} q, \hyperlink{classNode}{Node} r)
+\begin{DoxyCompactList}\small\item\em Checks whether the the points given in the order form a counter-\/clockwise turn. \end{DoxyCompactList}\item 
+double \hyperlink{classGraph_af62998005ee35671342b379af7400b1b}{polar\+\_\+angler} (\hyperlink{classNode}{Node} source, \hyperlink{classNode}{Node} target)
+\begin{DoxyCompactList}\small\item\em Returns the polar angle between the x axis and the source and target point. \end{DoxyCompactList}\item 
+\hyperlink{classNode}{Node} \hyperlink{classGraph_af87a876de5bf77e8acc6c1e646c48472}{get\+\_\+left\+\_\+most\+\_\+point} (bool flag\+\_\+lower, vector$<$ \hyperlink{classNode}{Node} $>$ point\+\_\+list)
+\item 
+\hyperlink{classNode}{Node} \hyperlink{classGraph_ab57f27f64ee47cd5e9a49fdb6de85554}{get\+\_\+right\+\_\+most\+\_\+point} (bool flag\+\_\+lower, vector$<$ \hyperlink{classNode}{Node} $>$ point\+\_\+list)
+\item 
+\mbox{\Hypertarget{classGraph_a606f345b4d2a90c850733272db8f0936}\label{classGraph_a606f345b4d2a90c850733272db8f0936}} 
+void \hyperlink{classGraph_a606f345b4d2a90c850733272db8f0936}{graham\+\_\+scan} ()
+\begin{DoxyCompactList}\small\item\em Implementation of Graham Scan to find the convex hull. Takes as input the vector of points given in the constructor and populates the convex hull attribute. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classGraph_a3645385ecb98f9082c38facede7b1555}\label{classGraph_a3645385ecb98f9082c38facede7b1555}} 
+void \hyperlink{classGraph_a3645385ecb98f9082c38facede7b1555}{jarvis\+\_\+march} ()
+\begin{DoxyCompactList}\small\item\em Implementation of Jarvis March to find the convex hull. Takes as input the vector of points given in the constructor and populates the convex hull attribute. \end{DoxyCompactList}\item 
+\hyperlink{classEdge}{Edge} \hyperlink{classGraph_a52305b31ad2a6ad8eb200b9413bed9be}{upper\+\_\+bridge} (std\+::vector$<$ \hyperlink{classNode}{Node} $>$ \&point\+\_\+list)
+\item 
+\mbox{\Hypertarget{classGraph_abb8152da6c3a5ded65c88e33d587bf3f}\label{classGraph_abb8152da6c3a5ded65c88e33d587bf3f}} 
+\hyperlink{classEdge}{Edge} {\bfseries lower\+\_\+bridge} (std\+::vector$<$ \hyperlink{classNode}{Node} $>$ \&point\+\_\+list)
+\item 
+\mbox{\Hypertarget{classGraph_a8ba642e6f2e4b781b1e069de0a00cd47}\label{classGraph_a8ba642e6f2e4b781b1e069de0a00cd47}} 
+std\+::vector$<$ \hyperlink{classNode}{Node} $>$ {\bfseries upper\+\_\+hull} (std\+::vector$<$ \hyperlink{classNode}{Node} $>$ \&point\+\_\+list, \hyperlink{classNode}{Node} p\+\_\+min, \hyperlink{classNode}{Node} p\+\_\+max)
+\item 
+\mbox{\Hypertarget{classGraph_a07f61e4cbf5540ef83bb33b19bc44068}\label{classGraph_a07f61e4cbf5540ef83bb33b19bc44068}} 
+std\+::vector$<$ \hyperlink{classNode}{Node} $>$ {\bfseries lower\+\_\+hull} (std\+::vector$<$ \hyperlink{classNode}{Node} $>$ \&point\+\_\+list, \hyperlink{classNode}{Node} p\+\_\+min, \hyperlink{classNode}{Node} p\+\_\+max)
+\item 
+\mbox{\Hypertarget{classGraph_a7b1b09417dc55e2b03e0e06feb6d99cc}\label{classGraph_a7b1b09417dc55e2b03e0e06feb6d99cc}} 
+void {\bfseries kirk\+\_\+patrick\+\_\+seidel} ()
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static bool \hyperlink{classGraph_ad0d59e9ffd312e3af8bb37f567da3320}{compare\+\_\+pairs} (pair$<$ \hyperlink{classNode}{Node}, double $>$ p1, pair$<$ \hyperlink{classNode}{Node}, double $>$ p2)
+\begin{DoxyCompactList}\small\item\em Comparator for the sort function used within Graham Scan. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This class contains all the properties relating to a group of points It has the list of points for which the hull is to be found It has the hull after running the convex hull algorithms It has the algorithms to find the convex hull. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classGraph_ad2e96f43e60cd916a3bccab231fc7570}\label{classGraph_ad2e96f43e60cd916a3bccab231fc7570}} 
+\index{Graph@{Graph}!Graph@{Graph}}
+\index{Graph@{Graph}!Graph@{Graph}}
+\subsubsection{\texorpdfstring{Graph()}{Graph()}}
+{\footnotesize\ttfamily Graph\+::\+Graph (\begin{DoxyParamCaption}\item[{\hyperlink{classData}{Data}}]{data }\end{DoxyParamCaption})}
+
+
+
+Construct a new \hyperlink{classGraph}{Graph}\+:\+: \hyperlink{classGraph}{Graph} object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & data object to be passed \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classGraph_ad0d59e9ffd312e3af8bb37f567da3320}\label{classGraph_ad0d59e9ffd312e3af8bb37f567da3320}} 
+\index{Graph@{Graph}!compare\+\_\+pairs@{compare\+\_\+pairs}}
+\index{compare\+\_\+pairs@{compare\+\_\+pairs}!Graph@{Graph}}
+\subsubsection{\texorpdfstring{compare\+\_\+pairs()}{compare\_pairs()}}
+{\footnotesize\ttfamily bool Graph\+::compare\+\_\+pairs (\begin{DoxyParamCaption}\item[{pair$<$ \hyperlink{classNode}{Node}, double $>$}]{p1,  }\item[{pair$<$ \hyperlink{classNode}{Node}, double $>$}]{p2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Comparator for the sort function used within Graham Scan. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em p1} & second point \\
+\hline
+{\em p2} & first point \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true p1 is lesser than p2 
+
+false p2 is lesser thatn p1 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classGraph_af87a876de5bf77e8acc6c1e646c48472}\label{classGraph_af87a876de5bf77e8acc6c1e646c48472}} 
+\index{Graph@{Graph}!get\+\_\+left\+\_\+most\+\_\+point@{get\+\_\+left\+\_\+most\+\_\+point}}
+\index{get\+\_\+left\+\_\+most\+\_\+point@{get\+\_\+left\+\_\+most\+\_\+point}!Graph@{Graph}}
+\subsubsection{\texorpdfstring{get\+\_\+left\+\_\+most\+\_\+point()}{get\_left\_most\_point()}}
+{\footnotesize\ttfamily \hyperlink{classNode}{Node} Graph\+::get\+\_\+left\+\_\+most\+\_\+point (\begin{DoxyParamCaption}\item[{bool}]{flag\+\_\+lower,  }\item[{vector$<$ \hyperlink{classNode}{Node} $>$}]{point\+\_\+list }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em If} & set, finds the lowermost and leftmost point else finds the highest and leftmost point. \\
+\hline
+{\em point\+\_\+list} & The vector of Nodes for which the leftmost point is to be found \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\hyperlink{classNode}{Node} The leftmost point 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classGraph_a657f8174fb95bd7bfd99556cfb4cbd65}\label{classGraph_a657f8174fb95bd7bfd99556cfb4cbd65}} 
+\index{Graph@{Graph}!get\+\_\+orientation@{get\+\_\+orientation}}
+\index{get\+\_\+orientation@{get\+\_\+orientation}!Graph@{Graph}}
+\subsubsection{\texorpdfstring{get\+\_\+orientation()}{get\_orientation()}}
+{\footnotesize\ttfamily bool Graph\+::get\+\_\+orientation (\begin{DoxyParamCaption}\item[{\hyperlink{classNode}{Node}}]{p,  }\item[{\hyperlink{classNode}{Node}}]{q,  }\item[{\hyperlink{classNode}{Node}}]{r }\end{DoxyParamCaption})}
+
+
+
+Checks whether the the points given in the order form a counter-\/clockwise turn. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & \\
+\hline
+{\em q} & \\
+\hline
+{\em r} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true They form a counter-\/clockwise turn 
+
+false They are either collinear or are clockwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classGraph_ab57f27f64ee47cd5e9a49fdb6de85554}\label{classGraph_ab57f27f64ee47cd5e9a49fdb6de85554}} 
+\index{Graph@{Graph}!get\+\_\+right\+\_\+most\+\_\+point@{get\+\_\+right\+\_\+most\+\_\+point}}
+\index{get\+\_\+right\+\_\+most\+\_\+point@{get\+\_\+right\+\_\+most\+\_\+point}!Graph@{Graph}}
+\subsubsection{\texorpdfstring{get\+\_\+right\+\_\+most\+\_\+point()}{get\_right\_most\_point()}}
+{\footnotesize\ttfamily \hyperlink{classNode}{Node} Graph\+::get\+\_\+right\+\_\+most\+\_\+point (\begin{DoxyParamCaption}\item[{bool}]{flag\+\_\+lower,  }\item[{vector$<$ \hyperlink{classNode}{Node} $>$}]{point\+\_\+list }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em If} & set, finds the rightmost and rightmost point else finds the highest and rightmost point. \\
+\hline
+{\em point\+\_\+list} & The vector of Nodes for which the rightmost point is to be found \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\hyperlink{classNode}{Node} The rightmost point 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classGraph_a8231d26a14b98e1b745dc589206288f0}\label{classGraph_a8231d26a14b98e1b745dc589206288f0}} 
+\index{Graph@{Graph}!get\+Point\+List@{get\+Point\+List}}
+\index{get\+Point\+List@{get\+Point\+List}!Graph@{Graph}}
+\subsubsection{\texorpdfstring{get\+Point\+List()}{getPointList()}}
+{\footnotesize\ttfamily std\+::vector$<$ \hyperlink{classNode}{Node} $>$ Graph\+::get\+Point\+List (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Returns a vector of \hyperlink{classNode}{Node} objects that is the list of points. 
+
+\begin{DoxyReturn}{Returns}
+std\+::vector$<$\+Node$>$ 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classGraph_af62998005ee35671342b379af7400b1b}\label{classGraph_af62998005ee35671342b379af7400b1b}} 
+\index{Graph@{Graph}!polar\+\_\+angler@{polar\+\_\+angler}}
+\index{polar\+\_\+angler@{polar\+\_\+angler}!Graph@{Graph}}
+\subsubsection{\texorpdfstring{polar\+\_\+angler()}{polar\_angler()}}
+{\footnotesize\ttfamily double Graph\+::polar\+\_\+angler (\begin{DoxyParamCaption}\item[{\hyperlink{classNode}{Node}}]{source,  }\item[{\hyperlink{classNode}{Node}}]{target }\end{DoxyParamCaption})}
+
+
+
+Returns the polar angle between the x axis and the source and target point. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em source} & \\
+\hline
+{\em target} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+double the angle between the lines 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classGraph_ac3d8fd4be7db3fd814b68499322b9cba}\label{classGraph_ac3d8fd4be7db3fd814b68499322b9cba}} 
+\index{Graph@{Graph}!set\+Point\+List@{set\+Point\+List}}
+\index{set\+Point\+List@{set\+Point\+List}!Graph@{Graph}}
+\subsubsection{\texorpdfstring{set\+Point\+List()}{setPointList()}}
+{\footnotesize\ttfamily void Graph\+::set\+Point\+List (\begin{DoxyParamCaption}\item[{std\+::vector$<$ \hyperlink{classNode}{Node} $>$ \&}]{point\+\_\+list }\end{DoxyParamCaption})}
+
+
+
+Setter takes a reference to a vector of nodes as input and sets the point list as the vector. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em \&point\+\_\+list} & reference to a point \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classGraph_a52305b31ad2a6ad8eb200b9413bed9be}\label{classGraph_a52305b31ad2a6ad8eb200b9413bed9be}} 
+\index{Graph@{Graph}!upper\+\_\+bridge@{upper\+\_\+bridge}}
+\index{upper\+\_\+bridge@{upper\+\_\+bridge}!Graph@{Graph}}
+\subsubsection{\texorpdfstring{upper\+\_\+bridge()}{upper\_bridge()}}
+{\footnotesize\ttfamily \hyperlink{classEdge}{Edge} Graph\+::upper\+\_\+bridge (\begin{DoxyParamCaption}\item[{std\+::vector$<$ \hyperlink{classNode}{Node} $>$ \&}]{point\+\_\+list }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em point\+\_\+list} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\hyperlink{classEdge}{Edge} 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+graph.\+h\item 
+graph.\+cpp\end{DoxyCompactItemize}
