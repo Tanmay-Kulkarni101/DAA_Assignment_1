@@ -50,10 +50,10 @@ def animate_kps(i):
 
 	if len(left) > 0:
 		for left_point in left:
-			ax.scatter(left_point,color='blue')
+			ax.scatter(left_point[0],left_point[1],color='black')
 	if len(right) > 0:
 		for right_point in right:
-			ax.scatter(right_point,color='blue')
+			ax.scatter(right_point[0],right_point[1],color='black')
 	
 	return plot,
 

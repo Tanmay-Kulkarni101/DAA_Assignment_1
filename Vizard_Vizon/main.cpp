@@ -1,7 +1,7 @@
 #include "data.h"
 #include "graph.h"
 #include <chrono>
-const long long number_of_test_cases = 3;
+// const long long number_of_test_cases = 30;
 const double mean = 0;
 const double variance = 10;
 int main(){
@@ -22,6 +22,7 @@ int main(){
 			auto end = std::chrono::system_clock::now();
 			auto elapsed = end - start;
 			std::cout << "KPS: "<< elapsed.count() << '\n';
+			graph.displayConvexHull();
 		}
 		else if(i == 1){
 			puts("GS");

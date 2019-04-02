@@ -584,10 +584,12 @@ std::vector<Node> Graph::lower_hull(std::vector<Node> point_list,Node p_min, Nod
 					}
 				else if( !get_orientation(trapezoid_left.getX(),trapezoid_left.getY(),*it) && 
 						!(it->is_equal(trapezoid_left.getX()) || it->is_equal(trapezoid_left.getY() ) )  ){
+					file_handle << "l:" << it->to_string();
 					left_points.push_back(*it);
 				}
 				else if(!get_orientation(trapezoid_right.getX(),trapezoid_right.getY(),*it) && 
 						!(it->is_equal(trapezoid_right.getX()) || it->is_equal(trapezoid_right.getY()))){
+					file_handle << "r:" << it->to_string();
 					right_points.push_back(*it);
 				}
 				else{
@@ -610,10 +612,10 @@ std::vector<Node> Graph::lower_hull(std::vector<Node> point_list,Node p_min, Nod
 			else{
 				triangle_left = Edge(p_min,the_bridge.getX());
 				triangle_right = Edge(p_max,the_bridge.getX());
+				file_handle << "e:" << triangle_left.to_string();
+				file_handle << "e:" << triangle_top.to_string();
 			}
 
-			file_handle << "e:" << triangle_left.to_string();
-			file_handle << "e:" << triangle_top.to_string();
 
 
 			for(auto it = point_list.begin(); it < point_list.end(); it++){
@@ -625,9 +627,11 @@ std::vector<Node> Graph::lower_hull(std::vector<Node> point_list,Node p_min, Nod
 						continue;		
 					}
 				else if( !get_orientation(triangle_left.getX(),triangle_left.getY(),*it) && !(it->is_equal(triangle_left.getX()) || it->is_equal(triangle_left.getY() ) )  ){
+					file_handle << "l:" << it->to_string();
 					left_points.push_back(*it);
 				}
 				else if(!get_orientation(triangle_right.getX(),triangle_right.getY(),*it) && !(it->is_equal(triangle_right.getX()) || it->is_equal(triangle_right.getY()))){
+					file_handle << "r:" << it->to_string();
 					right_points.push_back(*it);
 				}
 				else{
@@ -714,22 +718,22 @@ void Graph::kirk_patrick_seidel(){
 	
 	vector<Node> lower_solution = lower_hull(lower_hull_points,left_bottom,right_bottom,file_handle);
 
-	// if(upper_solution[0].is_equal(lower_solution[0]) ){
-	// 	lower_solution.erase(lower_solution.begin());
-	// }
-	// if(upper_solution[upper_solution.size()-1].is_equal(lower_solution[lower_solution.size()-1]) ){
-	// 	lower_solution.pop_back();
-	// }
+	if(upper_solution[0].is_equal(lower_solution[0]) ){
+		lower_solution.erase(lower_solution.begin());
+	}
+	if(upper_solution[upper_solution.size()-1].is_equal(lower_solution[lower_solution.size()-1]) ){
+		lower_solution.pop_back();
+	}
 
-	// vector<Node> solution;
-	// solution.insert(solution.end(),upper_solution.begin(),upper_solution.end());
-	// solution.insert(solution.end(),lower_solution.rbegin(),lower_solution.rend());
+	vector<Node> solution;
+	solution.insert(solution.end(),upper_solution.begin(),upper_solution.end());
+	solution.insert(solution.end(),lower_solution.rbegin(),lower_solution.rend());
 
-	// if(solution.size() > 2){
-	// 	convex_hull = solution;
-	// }
-	// else{
-	// 	puts("No solution exists for this ");
-	// }
+	if(solution.size() > 2){
+		convex_hull = solution;
+	}
+	else{
+		puts("No solution exists for this ");
+	}
 	file_handle.close();
 }
