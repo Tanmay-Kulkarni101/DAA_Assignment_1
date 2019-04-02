@@ -1,0 +1,154 @@
+\hypertarget{classData}{}\section{Data Class Reference}
+\label{classData}\index{Data@{Data}}
+
+
+This class is used to facilitate all the transactions between the dataset in a file and the execution apparatus.  
+
+
+
+
+{\ttfamily \#include $<$data.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{classData_a5232e86a00b695f2829b8f577a3f9fc1}{generate\+Test\+Cases} (long long, double, double)
+\begin{DoxyCompactList}\small\item\em This function takes the number of test cases,the mean of the normal distribution as well as the variance Alternatively we can use it with a uniform distribution by changing the function call used in the code. \end{DoxyCompactList}\item 
+std\+::vector$<$ std\+::string $>$ \hyperlink{classData_aa8feaee3333daf2ac31c31e171777532}{split} (const char $\ast$str, char delim)
+\begin{DoxyCompactList}\small\item\em This is used to split the character array input based on a delimiter. \end{DoxyCompactList}\item 
+std\+::vector$<$ \hyperlink{classNode}{Node} $>$ \hyperlink{classData_aaa0edf3d2ab62aa1a10abed1ba8d89ca}{get\+\_\+data\+\_\+from\+\_\+file} ()
+\begin{DoxyCompactList}\small\item\em This function extracts the data stored in a text file and returns a vector of nodes. \end{DoxyCompactList}\item 
+std\+::string \hyperlink{classData_afe8507d0c66eed659e966605058eb6c4}{get\+Delim} ()
+\begin{DoxyCompactList}\small\item\em The delimiter used to separate points. \end{DoxyCompactList}\item 
+std\+::string \hyperlink{classData_ac29a8b0190245be5f1cb5f650c16166b}{get\+File\+Path} ()
+\begin{DoxyCompactList}\small\item\em The file path used to store the data points for which the convex hull is to be found. \end{DoxyCompactList}\item 
+\hyperlink{classData_aa47da7ace142c56f5f4fc1109ec8f7b0}{Data} (std\+::string file\+Path, std\+::string delim)
+\begin{DoxyCompactList}\small\item\em Construct a new \hyperlink{classData}{Data}\+:\+: \hyperlink{classData}{Data} object Constructor to create a data object that stores data in the location specified by file\+Path. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classData_af11f741cb7f587e2e495452a8905a22a}\label{classData_af11f741cb7f587e2e495452a8905a22a}} 
+\hyperlink{classData_af11f741cb7f587e2e495452a8905a22a}{Data} ()
+\begin{DoxyCompactList}\small\item\em Construct a new \hyperlink{classData}{Data}\+:\+: \hyperlink{classData}{Data} object This is the default constructor that stores the hardcoded values for path and delimiter. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classData_a9e44f560bc6b2351c85113aa672b0438}\label{classData_a9e44f560bc6b2351c85113aa672b0438}} 
+static const int \hyperlink{classData_a9e44f560bc6b2351c85113aa672b0438}{D\+A\+T\+A\+\_\+\+L\+I\+N\+E\+\_\+\+S\+I\+ZE} = 20
+\begin{DoxyCompactList}\small\item\em default size of a record in the file \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classData_a7cd8e308ca67c200fb41b24895906590}\label{classData_a7cd8e308ca67c200fb41b24895906590}} 
+static const std\+::string \hyperlink{classData_a7cd8e308ca67c200fb41b24895906590}{D\+E\+F\+A\+U\+L\+T\+\_\+\+D\+E\+L\+IM} = \char`\"{} \char`\"{}
+\begin{DoxyCompactList}\small\item\em the default delimiter to differentiate between entries within the file \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classData_ac8b591702bba6d5566ec196f8e14c78c}\label{classData_ac8b591702bba6d5566ec196f8e14c78c}} 
+static const std\+::string \hyperlink{classData_ac8b591702bba6d5566ec196f8e14c78c}{D\+E\+F\+A\+U\+L\+T\+\_\+\+F\+I\+L\+E\+\_\+\+P\+A\+TH} = \char`\"{}./data/Data\+Points.\+txt\char`\"{}
+\begin{DoxyCompactList}\small\item\em The default file path within the project to store files. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This class is used to facilitate all the transactions between the dataset in a file and the execution apparatus. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classData_aa47da7ace142c56f5f4fc1109ec8f7b0}\label{classData_aa47da7ace142c56f5f4fc1109ec8f7b0}} 
+\index{Data@{Data}!Data@{Data}}
+\index{Data@{Data}!Data@{Data}}
+\subsubsection{\texorpdfstring{Data()}{Data()}}
+{\footnotesize\ttfamily Data\+::\+Data (\begin{DoxyParamCaption}\item[{std\+::string}]{file\+Path,  }\item[{std\+::string}]{delim }\end{DoxyParamCaption})}
+
+
+
+Construct a new \hyperlink{classData}{Data}\+:\+: \hyperlink{classData}{Data} object Constructor to create a data object that stores data in the location specified by file\+Path. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+Path} & The path at which we can find the data points for the convex hull \\
+\hline
+{\em delim} & The delimiter that separates the data points within the file \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classData_a5232e86a00b695f2829b8f577a3f9fc1}\label{classData_a5232e86a00b695f2829b8f577a3f9fc1}} 
+\index{Data@{Data}!generate\+Test\+Cases@{generate\+Test\+Cases}}
+\index{generate\+Test\+Cases@{generate\+Test\+Cases}!Data@{Data}}
+\subsubsection{\texorpdfstring{generate\+Test\+Cases()}{generateTestCases()}}
+{\footnotesize\ttfamily int Data\+::generate\+Test\+Cases (\begin{DoxyParamCaption}\item[{long long}]{number\+Of\+Test\+Cases,  }\item[{double}]{mean,  }\item[{double}]{variance }\end{DoxyParamCaption})}
+
+
+
+This function takes the number of test cases,the mean of the normal distribution as well as the variance Alternatively we can use it with a uniform distribution by changing the function call used in the code. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em number\+Of\+Test\+Cases} & It is the number of data points on which the algorithm has to run \\
+\hline
+{\em mean} & It is the mean of the sampling distribution \\
+\hline
+{\em variance} & It is the variance of the sampling distribution \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int Returns 0 on successful execution, can be used for buffer overflows if the input is too large 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classData_aaa0edf3d2ab62aa1a10abed1ba8d89ca}\label{classData_aaa0edf3d2ab62aa1a10abed1ba8d89ca}} 
+\index{Data@{Data}!get\+\_\+data\+\_\+from\+\_\+file@{get\+\_\+data\+\_\+from\+\_\+file}}
+\index{get\+\_\+data\+\_\+from\+\_\+file@{get\+\_\+data\+\_\+from\+\_\+file}!Data@{Data}}
+\subsubsection{\texorpdfstring{get\+\_\+data\+\_\+from\+\_\+file()}{get\_data\_from\_file()}}
+{\footnotesize\ttfamily std\+::vector$<$ \hyperlink{classNode}{Node} $>$ Data\+::get\+\_\+data\+\_\+from\+\_\+file (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+This function extracts the data stored in a text file and returns a vector of nodes. 
+
+\begin{DoxyReturn}{Returns}
+std\+::vector$<$\+Node$>$ 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classData_afe8507d0c66eed659e966605058eb6c4}\label{classData_afe8507d0c66eed659e966605058eb6c4}} 
+\index{Data@{Data}!get\+Delim@{get\+Delim}}
+\index{get\+Delim@{get\+Delim}!Data@{Data}}
+\subsubsection{\texorpdfstring{get\+Delim()}{getDelim()}}
+{\footnotesize\ttfamily std\+::string Data\+::get\+Delim (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+The delimiter used to separate points. 
+
+\begin{DoxyReturn}{Returns}
+std\+::string 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classData_ac29a8b0190245be5f1cb5f650c16166b}\label{classData_ac29a8b0190245be5f1cb5f650c16166b}} 
+\index{Data@{Data}!get\+File\+Path@{get\+File\+Path}}
+\index{get\+File\+Path@{get\+File\+Path}!Data@{Data}}
+\subsubsection{\texorpdfstring{get\+File\+Path()}{getFilePath()}}
+{\footnotesize\ttfamily std\+::string Data\+::get\+File\+Path (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+The file path used to store the data points for which the convex hull is to be found. 
+
+\begin{DoxyReturn}{Returns}
+std\+::string 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classData_aa8feaee3333daf2ac31c31e171777532}\label{classData_aa8feaee3333daf2ac31c31e171777532}} 
+\index{Data@{Data}!split@{split}}
+\index{split@{split}!Data@{Data}}
+\subsubsection{\texorpdfstring{split()}{split()}}
+{\footnotesize\ttfamily std\+::vector$<$ std\+::string $>$ Data\+::split (\begin{DoxyParamCaption}\item[{const char $\ast$}]{str,  }\item[{char}]{delim }\end{DoxyParamCaption})}
+
+
+
+This is used to split the character array input based on a delimiter. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em str} & The input character array \\
+\hline
+{\em delim} & The delimiter that is used to divide the char array into parts \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::vector$<$std\+::string$>$ It returns a vector of the string parts delimited by the delimiter character 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+data.\+h\item 
+data.\+cpp\end{DoxyCompactItemize}
