@@ -233,6 +233,9 @@ Edge Graph::upper_bridge(std::vector<Node> point_list){
 	Node the_median= Utilities<Node>::median(point_list,point_list.size()/2); // get the median for the points passed according to the x value
 	std::vector<Node> left,right,candidates;
 
+	printf("median: ");
+	the_median.print_node();
+
 	for(int i=0;i<point_list.size();i++){ //points to the left of the median
 		if(point_list[i] < the_median){
 			left.push_back(point_list[i]);
@@ -241,6 +244,14 @@ Edge Graph::upper_bridge(std::vector<Node> point_list){
 			right.push_back(point_list[i]);
 		}
 	}
+
+	puts("left");
+	for(auto it = left.begin();it < left.end();it++)
+		it->print_node();
+	
+	puts("right");
+	for(auto it = right.begin();it < right.end();it++)
+		it->print_node();
 
 	std::vector<Edge> lines; // arbitrarily take points together to form lines
 	for(int i=0;i<point_list.size()-1;i+=2){ // if we have an even number of elements, we need to go to the second last one
@@ -253,8 +264,14 @@ Edge Graph::upper_bridge(std::vector<Node> point_list){
 		candidates.push_back(point_list[point_list.size()-1]);
 	}
 
+	// puts("lines");
+	// for(auto it = lines.begin();it < lines.end();it++)
+	// 	it->print_edge();
+
 	Edge median_line = Utilities<Edge>::median(lines,lines.size()/2); // obtain the median slope
-	
+	// printf("median line %lf",median_line.get_slope());
+	// median_line.print_edge();
+
 	std::vector<Edge> lower_slope_lines,higher_slope_lines,equal_slope_lines;
 	//if we find a point that is clockwise with respect to the original start, we terminate
 	for(int i=0;i<lines.size();i++){ // add those lines with smaller slope
@@ -269,15 +286,37 @@ Edge Graph::upper_bridge(std::vector<Node> point_list){
 		}
 	}
 
+	puts("lower slope lines");
+	for(auto it = lower_slope_lines.begin();it < lower_slope_lines.end();it++){
+		printf("slope %lf, ",it->get_slope());
+		it->print_edge();
+	}
+	puts("higher slope lines");
+	for(auto it = higher_slope_lines.begin();it < higher_slope_lines.end();it++){
+		printf("slope %lf, ",it->get_slope());
+		it->print_edge();
+	}
+	puts("equal slope lines");
+	for(auto it = equal_slope_lines.begin();it < equal_slope_lines.end();it++){
+		printf("slope %lf, ",it->get_slope());
+		it->print_edge();
+	}
+
 	double slope = median_line.get_slope();
 	Node node_min,node_max;
 	double intercept = point_list[0].getY() - slope*point_list[0].getX();
 	node_min = point_list[0];
 	node_max = point_list[0];
+	puts("node min, node max");
+	node_min.print_node();
+	node_max.print_node();
 	for(int i=1;i<point_list.size();i++){
 		double temp_intercept = point_list[i].getY() - slope*point_list[i].getX();
-		
-		if(temp_intercept>intercept){
+		printf("point: ");
+		point_list[i].print_node();
+		printf("temp_intercept %lf intercept %lf equality %d gareeb equality %d\n",temp_intercept,intercept,temp_intercept == intercept,abs(temp_intercept - intercept) < 0.0000001);
+		printf("min %d, max %d\n",node_min>point_list[i],node_max<point_list[i]);
+		if(!(abs(temp_intercept - intercept) < 0.0000001) && temp_intercept>intercept){
 			intercept=temp_intercept;
 			node_min = node_max = point_list[i];
 		}
@@ -290,6 +329,9 @@ Edge Graph::upper_bridge(std::vector<Node> point_list){
 			}
 		}
 	}
+	puts("endpoints are");
+	node_max.print_node();
+	node_min.print_node();
 
 	
 	if(node_min < the_median && node_max >= the_median){
@@ -321,7 +363,7 @@ Edge Graph::upper_bridge(std::vector<Node> point_list){
 			candidates.push_back(it->getY());
 		}
 	}
-
+	puts("about to recurse");
 	return upper_bridge(candidates);
 }
 
@@ -381,7 +423,7 @@ Edge Graph::lower_bridge(std::vector<Node> point_list){
 	for(int i=1;i<point_list.size();i++){
 		double temp_intercept = point_list[i].getY() - slope*point_list[i].getX();
 		
-		if(temp_intercept<intercept){
+		if(!(abs(temp_intercept - intercept) < 0.0000001) && temp_intercept<intercept){
 			intercept=temp_intercept;
 			node_min = node_max = point_list[i];
 		}
@@ -433,12 +475,12 @@ std::vector<Node> Graph::upper_hull(std::vector<Node> point_list,Node p_min, Nod
 	
 	std::vector<Node> answer;
 
-	if (p_min.getX() == p_max.getX() && p_min.getY() == p_min.getY()){
+	if (p_min.getX() == p_max.getX() && p_min.getY() == p_max.getY()){
 		answer.push_back(p_min); 
 	}
 	else{
 		std::vector<Node> left_points,right_points;
-
+		puts("finding the bridge");
 		Edge the_bridge = upper_bridge(point_list);
 
 		file_handle << "b:" << the_bridge.to_string();
@@ -548,7 +590,7 @@ std::vector<Node> Graph::upper_hull(std::vector<Node> point_list,Node p_min, Nod
 std::vector<Node> Graph::lower_hull(std::vector<Node> point_list,Node p_min, Node p_max,fstream &file_handle){
 	std::vector<Node> answer;
 
-	if (p_min.getX() == p_max.getX() && p_min.getY() == p_min.getY()){
+	if (p_min.getX() == p_max.getX() && p_min.getY() == p_max.getY()){
 		answer.push_back(p_min); 
 	}
 	else{

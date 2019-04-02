@@ -43,6 +43,7 @@ def animate_kps(i):
 	
 	print(bridges[i])
 	for bridge_index in range(i+1):
+		print(bridge_index)
 		ax.plot(bridges[bridge_index][:,0],bridges[bridge_index][:,1],color = 'red')
 
 	for edge in edges:
