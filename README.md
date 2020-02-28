@@ -43,3 +43,9 @@ g++ main.cpp graph.cpp edge.cpp data.cpp node.cpp
 ./a.out
 ```
 Link to the [Performance Report](https://github.com/Tanmay-Kulkarni101/DAA_Assignment_1/blob/master/Timings.html)
+
+
+## Authors
+- Tanmay Kulkarni
+- Aditya Srikanth
+- Vishal Chokala
